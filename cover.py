@@ -1,6 +1,5 @@
 # pyright: reportMissingModuleSource=false
 
-
 import os
 from PIL import Image
 from reportlab.pdfgen import canvas
@@ -8,7 +7,6 @@ from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import logging
-
 
 def calculate_spine_width(page_count, is_hardcover=False):
     if is_hardcover:
@@ -73,7 +71,6 @@ def calculate_spine_width(page_count, is_hardcover=False):
         # Paperback spine width calculation
         return (page_count / 444 + 0.06) * inch
 
-
 def generate_cover_pdf(
     front_cover_path, output_path, page_count, is_hardcover=False, book_title=""
 ):
@@ -116,9 +113,7 @@ def generate_cover_pdf(
     # Load and paste the logo on the back cover
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
     logo = Image.open(logo_path)
-    logo_size = int(
-        2 * inch / 3
-    )  # Set logo size to 2/3 inch (1/3 of original 2 inches)
+    logo_size = int(2 * inch / 3)  # Set logo size to 2/3 inch (1/3 of original 2 inches)
     logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
 
     # Calculate logo position (centered horizontally, 1 inch from bottom)
@@ -142,30 +137,31 @@ def generate_cover_pdf(
         PPI = 300
 
         # Calculate the maximum font size that will fit within the spine width
-        # We subtract twice the bleed margin from the spine width to get the
-        # available space for text Then multiply by PPI to convert from inches
-        # to pixels
         max_font_size = (spine_width - (2 * bleed_margin)) * PPI
 
         # Cap the font size at 12pt (in pixels) for readability
-        # We multiply by 4 because at 300 PPI, 1 point is approximately 4
-        # pixels (300 PPI / 72 points per inch ≈ 4.17)
         font_size = min(12 * 4, max_font_size)
 
         # Convert font size from pixels to points for setFont and stringWidth calculations
         font_size_pt = font_size / 4  # Approximate conversion
-        c.setFont("SF-Pro", font_size_pt)
 
         # Log the chosen font size for debugging
         logging.info(
             f"Spine text font size: {font_size:.2f} pixels (approximately {font_size_pt:.2f} points)"
         )
 
+        # Function to draw text with letter spacing
+        def draw_text_with_spacing(canvas, text, x, y, font_name, font_size, letter_spacing):
+            canvas.saveState()
+            canvas.setFont(font_name, font_size)
+            for char in text:
+                canvas.drawString(x, y, char)
+                x += pdfmetrics.stringWidth(char, font_name, font_size) + letter_spacing
+            canvas.restoreState()
+
         # Calculate the position for the spine text
-        spine_center_x = wrap_margin + cover_width + spine_width / 2 - bleed_margin
-        spine_top_y = (
-            total_height - 1 * inch - wrap_margin - bleed_margin
-        )  # Start 1 inches from the top
+        spine_center_x = wrap_margin + cover_width + spine_width / 2
+        spine_top_y = total_height - 1 * inch - wrap_margin - bleed_margin  # Start 1 inch from the top
 
         # Save the current state
         c.saveState()
@@ -174,8 +170,11 @@ def generate_cover_pdf(
         c.translate(spine_center_x, spine_top_y)
         c.rotate(-90)
 
-        # Calculate the width of the text
-        text_width_pt = c.stringWidth(book_title, "SF-Pro", font_size_pt)
+        # Set letter spacing (adjust this value as needed)
+        letter_spacing = 2  # 2 point spacing between letters
+
+        # Calculate the width of the text with letter spacing
+        text_width_pt = sum(pdfmetrics.stringWidth(char, "SF-Pro", font_size_pt) for char in book_title) + letter_spacing * (len(book_title) - 1)
         text_width_px = text_width_pt * 4  # Convert back to pixels
 
         # Ensure text fits within spine length (in pixels)
@@ -184,12 +183,13 @@ def generate_cover_pdf(
             scale_factor = spine_length_px / text_width_px
             c.scale(scale_factor, 1)
             text_width_px *= scale_factor
+            letter_spacing *= scale_factor
 
         # Set the fill color to a darker gray (halfway between light gray and black)
         c.setFillColorRGB(0.35, 0.35, 0.35)  # Darker gray color
 
-        # Draw the string, converting back to the coordinate system used by drawString
-        c.drawString(-text_width_px / (2 * PPI), 0, book_title)
+        # Draw the string with letter spacing
+        draw_text_with_spacing(c, book_title, -text_width_px / (2 * PPI), 0, "SF-Pro", font_size_pt, letter_spacing)
 
         # Reset the fill color to black for other elements
         c.setFillColorRGB(0, 0, 0)

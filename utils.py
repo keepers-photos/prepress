@@ -1,5 +1,6 @@
 import logging
 
+
 def print_progress(
     iteration,
     total,

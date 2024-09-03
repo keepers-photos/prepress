@@ -205,3 +205,37 @@
 
 # 2024-09-03 09:50:18.359321
 +/ask what does "new_front_cover.paste" mean? why can't we use the `front_cover.thumbnail`?
+
+# 2024-09-04 10:27:21.153206
++/undo
+
+# 2024-09-04 10:30:22.222818
++make the spine text start from the top 2"
+
+# 2024-09-04 10:32:07.404604
++/run venv/bin/python prepress.py "2024 Karate National & Trip to Auckland" ./data ./ 28912-0 --process cover --cover
++_type soft_cover --book_size square
+
+# 2024-09-04 10:32:16.200790
++/run venv/bin/python prepress.py "2024 Karate National & Trip to Auckland" ./data ./ 28912-0 --process cover --cover_type soft_cover --book_size square
+
+# 2024-09-04 10:36:22.737919
++/run venv/bin/python prepress.py "LOUIE JACK SKERLJ DANIELSON 27 SEPTEMBER 2003" ./data ./ 28912-0 --process cover --cover_type soft_cover --book_size square
+
+# 2024-09-04 10:37:17.688390
++can we make the font text light gray?
+
+# 2024-09-04 10:37:39.696615
++/run venv/bin/python prepress.py "LOUIE JACK SKERLJ DANIELSON 27 SEPTEMBER 2003" ./data ./ 28912-0 --process cover --cover_type soft_cover --book_size square
+
+# 2024-09-04 10:37:59.380079
++too light. darker. let's go half way between this and black
+
+# 2024-09-04 10:38:33.147997
++/run venv/bin/python prepress.py "LOUIE JACK SKERLJ DANIELSON 27 SEPTEMBER 2003" ./data ./ 28912-0 --process cover --cover_type soft_cover --book_size square
+
+# 2024-09-04 10:39:55.743606
++/ask please offer me the shell command as the following: venv/bin/python prepress.py "LOUIE JACK SKERLJ DANIELSON 27 SEPTEMBER 2003" ./data ./ 28912-0 --process cover --cover_type hard_cover --book_size square
+
+# 2024-09-04 10:53:03.015776
++/ask how do i increase the letter spacing for spine text?

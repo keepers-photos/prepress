@@ -45,7 +45,7 @@ def process_image(args):
         return None
 
 
-def generate_internal_pdf(input_path, output_path, book_size):
+def generate_interior_pdf(input_path, output_path, book_size):
     input_path = os.path.abspath(input_path)
     output_path = os.path.abspath(output_path)
 

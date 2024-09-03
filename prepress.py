@@ -1,10 +1,21 @@
+"""
+venv/bin/python prepress.py  \
+    "LOUIE JACK SKERLJ DANIELSON 27 September 2003" \
+    ./data \
+    ./ \
+    28912-0 \
+    --process cover \
+    --cover_type soft_cover \
+    --book_size square
+"""
+
 # pyright: reportMissingModuleSource=false
 
 import os
 import logging
 
 from cover import generate_cover_pdf
-from generate_internal_pdf import generate_internal_pdf
+from interior import generate_interior_pdf
 
 # Configure logging
 logging.basicConfig(
@@ -51,23 +62,23 @@ if __name__ == "__main__":
     logging.info(f"Number of pages: {page_count}")
 
     if args.process in ["pages", "all"]:
-        internal_output_path = os.path.join(
-            args.output_path, f"{args.order_id}-internal.pdf"
+        interior_output_path = os.path.join(
+            args.output_path, f"{args.order_id}-interior.pdf"
         )
-        generate_internal_pdf(args.input_path, internal_output_path, args.book_size)
-        logging.info(f"Internal pages PDF generated: {internal_output_path}")
+        generate_interior_pdf(args.input_path, interior_output_path, args.book_size)
+        logging.info(f"Internal pages PDF generated: {interior_output_path}")
 
         # Check if the file was actually created in the output directory
-        if not os.path.exists(internal_output_path):
+        if not os.path.exists(interior_output_path):
             # If not, check if it was created in the input directory
-            input_internal_path = os.path.join(
-                args.input_path, f"{args.order_id}-internal.pdf"
+            input_interior_path = os.path.join(
+                args.input_path, f"{args.order_id}-interior.pdf"
             )
-            if os.path.exists(input_internal_path):
+            if os.path.exists(input_interior_path):
                 # Move the file to the correct output directory
-                os.rename(input_internal_path, internal_output_path)
+                os.rename(input_interior_path, interior_output_path)
                 logging.info(
-                    f"Moved internal PDF from input to output directory: {internal_output_path}"
+                    f"Moved interior PDF from input to output directory: {interior_output_path}"
                 )
             else:
                 logging.error(
