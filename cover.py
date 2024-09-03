@@ -1,5 +1,6 @@
 # pyright: reportMissingModuleSource=false
 
+
 import os
 from PIL import Image
 from reportlab.pdfgen import canvas
