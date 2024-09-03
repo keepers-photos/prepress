@@ -163,13 +163,13 @@ def generate_cover_pdf(
 
         # Calculate the position for the spine text
         spine_center_x = wrap_margin + cover_width + (spine_width / 2)
-        spine_center_y = total_height / 2
+        spine_top_y = total_height - 2 * inch  # Start 2 inches from the top
 
         # Save the current state
         c.saveState()
 
-        # Translate to the spine center and rotate
-        c.translate(spine_center_x, spine_center_y)
+        # Translate to the spine top and rotate
+        c.translate(spine_center_x, spine_top_y)
         c.rotate(-90)
 
         # Calculate the width of the text
