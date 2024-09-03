@@ -6,7 +6,6 @@ import logging
 from multiprocessing import Pool, cpu_count
 
 from PIL import Image, ImageDraw
-from utils import print_progress
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
@@ -89,7 +88,7 @@ def generate_cover_pdf(
 ):
     # Define bleed margin
     bleed_margin = 0.125 * inch
-    cover_width = 8.5 * inch + 2 * bleed_margin
+    cover_width = 8.5 * inch + bleed_margin
     cover_height = 8.5 * inch + 2 * bleed_margin
 
     # Define wrap margins (only for hardcover)
@@ -131,8 +130,7 @@ def generate_cover_pdf(
     full_cover.paste(front_cover, front_cover_position)
 
     # Load and paste the logo on the back cover
-    logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
-    logo = Image.open(logo_path)
+    logo = Image.open("logo.jpg")
     logo_size = int(
         2 * inch / 3
     )  # Set logo size to 2/3 inch (1/3 of original 2 inches)
@@ -214,6 +212,22 @@ def process_image(args):
         logging.error(f"stdout: {e.stdout}")
         logging.error(f"stderr: {e.stderr}")
         return None
+
+
+def print_progress(
+    iteration,
+    total,
+    prefix="",
+    suffix="",
+    decimals=1,
+    length=50,
+    fill="█",
+    print_end="\r",
+):
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filled_length = int(length * iteration // total)
+    bar = fill * filled_length + "-" * (length - filled_length)
+    logging.info(f"\r{prefix} |{bar}| {percent}% {suffix}")
 
 
 def process_images(input_path, output_path, book_size):
