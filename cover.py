@@ -183,8 +183,14 @@ def generate_cover_pdf(
             c.scale(scale_factor, 1)
             text_width_px *= scale_factor
 
+        # Set the fill color to light gray
+        c.setFillColorRGB(0.7, 0.7, 0.7)  # Light gray color
+
         # Draw the string, converting back to the coordinate system used by drawString
         c.drawString(-text_width_px / (2 * PPI), 0, book_title)
+
+        # Reset the fill color to black for other elements
+        c.setFillColorRGB(0, 0, 0)
 
         # Log the final text width for debugging
         logging.info(f"Spine text width: {text_width_px:.2f} pixels")
