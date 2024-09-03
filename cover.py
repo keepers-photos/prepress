@@ -1,3 +1,5 @@
+# pyright: reportMissingModuleSource=false
+
 import os
 from PIL import Image
 from reportlab.pdfgen import canvas
@@ -5,6 +7,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import logging
+
 
 def calculate_spine_width(page_count, is_hardcover=False):
     if is_hardcover:
@@ -68,6 +71,7 @@ def calculate_spine_width(page_count, is_hardcover=False):
     else:
         # Paperback spine width calculation
         return (page_count / 444 + 0.06) * inch
+
 
 def generate_cover_pdf(
     front_cover_path, output_path, page_count, is_hardcover=False, book_title=""
