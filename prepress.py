@@ -1,3 +1,5 @@
+# pyright: reportMissingModuleSource=false
+
 import os
 import sys
 import glob
@@ -16,7 +18,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# pyright: reportMissingModuleSource=false
+from utils import print_progress
 
 
 def calculate_spine_width(page_count, is_hardcover=False):
@@ -213,22 +215,6 @@ def process_image(args):
         logging.error(f"stdout: {e.stdout}")
         logging.error(f"stderr: {e.stderr}")
         return None
-
-
-def print_progress(
-    iteration,
-    total,
-    prefix="",
-    suffix="",
-    decimals=1,
-    length=50,
-    fill="█",
-    print_end="\r",
-):
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filled_length = int(length * iteration // total)
-    bar = fill * filled_length + "-" * (length - filled_length)
-    logging.info(f"\r{prefix} |{bar}| {percent}% {suffix}")
 
 
 def process_images(input_path, output_path, book_size):
