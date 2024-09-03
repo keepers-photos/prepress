@@ -5,7 +5,7 @@ import subprocess
 import logging
 from multiprocessing import Pool, cpu_count
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
@@ -99,7 +99,7 @@ def generate_cover_pdf(
 
     # Load and resize the front cover image
     front_cover = Image.open(front_cover_path)
-    front_cover.thumbnail((int(cover_width), int(cover_height)), Image.LANCZOS)
+    front_cover.thumbnail((int(cover_width), int(cover_height)), Image.Resampling.LANCZOS)
 
     # Create a new image with the correct size and paste the resized cover
     new_front_cover = Image.new(
@@ -132,7 +132,7 @@ def generate_cover_pdf(
     logo_size = int(
         2 * inch / 3
     )  # Set logo size to 2/3 inch (1/3 of original 2 inches)
-    logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
+    logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
 
     # Calculate logo position (centered horizontally, 1 inch from bottom)
     logo_x = int(wrap_margin + (cover_width - logo_size) / 2)
