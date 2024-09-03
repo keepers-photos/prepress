@@ -11,9 +11,9 @@ from utils import print_progress
 def process_image(args):
     input_file, output_file, is_right_page, book_size = args
     if book_size == "square":
-        page_width = page_height = 2625  # 8.75 inches at 300 DPI
+        page_size = 2625  # 8.75 inches at 300 DPI
     elif book_size == "small_square":
-        page_width = page_height = 2325  # 7.75 inches at 300 DPI
+        page_size = 2325  # 7.75 inches at 300 DPI
     else:
         raise ValueError(f"Unsupported book size: {book_size}")
 
@@ -25,9 +25,7 @@ def process_image(args):
         "-units",
         "PixelsPerInch",
         "-resize",
-        f"{page_width}x{page_height}",
-        "-background",
-        "white",
+        f"{page_size}x{page_size}!",  # Force resize to exact dimensions
         "-quality",
         "100",
         "-compress",

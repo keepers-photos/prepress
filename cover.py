@@ -91,16 +91,7 @@ def generate_cover_pdf(
 
     # Load and resize the front cover image
     front_cover = Image.open(front_cover_path)
-    front_cover.thumbnail((int(cover_width), int(cover_height)), Image.LANCZOS)
-
-    # Create a new image with the correct size and paste the resized cover
-    new_front_cover = Image.new(
-        "RGB", (int(cover_width), int(cover_height)), (255, 255, 255)
-    )
-    paste_x = (int(cover_width) - front_cover.width) // 2
-    paste_y = (int(cover_height) - front_cover.height) // 2
-    new_front_cover.paste(front_cover, (paste_x, paste_y))
-    front_cover = new_front_cover
+    front_cover = front_cover.resize((int(cover_width), int(cover_height)), Image.LANCZOS)
 
     # Log the size including wrap, bleed, and spine width
     logging.info(
@@ -112,12 +103,12 @@ def generate_cover_pdf(
     # Create a new image for the full cover (front, spine, back, with margins and bleed)
     full_cover = Image.new("RGB", (int(total_width), int(total_height)), color="white")
 
-    # Paste the front cover
-    front_cover_position = (
-        int(wrap_margin + cover_width + spine_width),
-        int(wrap_margin + bleed_margin),
-    )
-    full_cover.paste(front_cover, front_cover_position)
+    # Calculate the x-coordinate for pasting the front cover
+    front_cover_x = int(wrap_margin + cover_width + spine_width)
+    front_cover_y = int(wrap_margin)
+
+    # Paste the front cover at the correct position
+    full_cover.paste(front_cover, (front_cover_x, front_cover_y))
 
     # Load and paste the logo on the back cover
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
