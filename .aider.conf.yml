@@ -1,6 +1,6 @@
 vim: true
 model: claude-3-5-sonnet-20240620
-read: [CONVENTIONS.md, requirements.txt, spec/lulu-book-creation-guide.txt]
+read: [README.md, requirements.txt, spec/lulu-book-creation-guide.txt]
 
 
 cache-prompts: true
