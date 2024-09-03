@@ -162,8 +162,8 @@ def generate_cover_pdf(
         )
 
         # Calculate the position for the spine text
-        spine_center_x = wrap_margin + cover_width + (spine_width / 2)
-        spine_top_y = total_height - 2 * inch  # Start 2 inches from the top
+        spine_center_x = wrap_margin + cover_width + spine_width / 2 - bleed_margin
+        spine_top_y = total_height - 1 * inch - wrap_margin - bleed_margin  # Start 1 inches from the top
 
         # Save the current state
         c.saveState()
