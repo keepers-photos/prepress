@@ -136,21 +136,53 @@ def generate_cover_pdf(
     if page_count > 80:
         # Register the font (assuming SF-Pro.ttf is in the same directory as the script)
         pdfmetrics.registerFont(TTFont("SF-Pro", "SF-Pro.ttf"))
-        c.setFont("SF-Pro", 12)
+    
+        # Define the PPI (Pixels Per Inch) for our high-resolution PDF
+        PPI = 300
 
-        # Calculate the position for the spine text. Note that the spine text height plus
-        # 2 * bleed_margin should not exceed the total spine width.
-        spine_center_x = wrap_margin + cover_width + bleed_margin + (spine_width / 2)
+        # Calculate the maximum font size that will fit within the spine width
+        # We subtract twice the bleed margin from the spine width to get the available space for text
+        # Then multiply by PPI to convert from inches to pixels
+        max_font_size = (spine_width - (2 * bleed_margin)) * PPI
+
+        # Cap the font size at 12pt (in pixels) for readability
+        # We multiply by 4 because at 300 PPI, 1 point is approximately 4 pixels (300 PPI / 72 points per inch ≈ 4.17)
+        font_size = min(12 * 4, max_font_size)
+
+        # Convert font size from pixels to points for setFont and stringWidth calculations
+        font_size_pt = font_size / 4  # Approximate conversion
+        c.setFont("SF-Pro", font_size_pt)
+
+        # Log the chosen font size for debugging
+        logging.info(f"Spine text font size: {font_size:.2f} pixels (approximately {font_size_pt:.2f} points)")
+
+        # Calculate the position for the spine text
+        spine_center_x = wrap_margin + cover_width + (spine_width / 2)
         spine_center_y = total_height / 2
 
         # Save the current state
         c.saveState()
 
-        # Translate to the spine center, rotate, and draw the text
+        # Translate to the spine center and rotate
         c.translate(spine_center_x, spine_center_y)
         c.rotate(-90)
-        text_width = c.stringWidth(book_title, "SF-Pro", 12)
-        c.drawString(-text_width / 2, 0, book_title)
+
+        # Calculate the width of the text
+        text_width_pt = c.stringWidth(book_title, "SF-Pro", font_size_pt)
+        text_width_px = text_width_pt * 4  # Convert back to pixels
+
+        # Ensure text fits within spine length (in pixels)
+        spine_length_px = (total_height - 2 * bleed_margin) * PPI
+        if text_width_px > spine_length_px:
+            scale_factor = spine_length_px / text_width_px
+            c.scale(scale_factor, 1)
+            text_width_px *= scale_factor
+
+        # Draw the string, converting back to the coordinate system used by drawString
+        c.drawString(-text_width_px / (2 * PPI), 0, book_title)
+
+        # Log the final text width for debugging
+        logging.info(f"Spine text width: {text_width_px:.2f} pixels")
 
         # Restore the previous state
         c.restoreState()
