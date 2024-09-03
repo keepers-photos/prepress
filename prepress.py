@@ -131,7 +131,7 @@ def generate_cover_pdf(
     full_cover.paste(front_cover, front_cover_position)
 
     # Load and paste the logo on the back cover
-    logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.png")
+    logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
     logo = Image.open(logo_path)
     logo_size = int(
         2 * inch / 3
