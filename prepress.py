@@ -6,6 +6,7 @@ import logging
 from multiprocessing import Pool, cpu_count
 
 from PIL import Image, ImageDraw
+from utils import print_progress
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
@@ -213,21 +214,6 @@ def process_image(args):
         logging.error(f"stderr: {e.stderr}")
         return None
 
-
-def print_progress(
-    iteration,
-    total,
-    prefix="",
-    suffix="",
-    decimals=1,
-    length=50,
-    fill="█",
-    print_end="\r",
-):
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filled_length = int(length * iteration // total)
-    bar = fill * filled_length + "-" * (length - filled_length)
-    logging.info(f"\r{prefix} |{bar}| {percent}% {suffix}")
 
 
 def process_images(input_path, output_path, book_size):
