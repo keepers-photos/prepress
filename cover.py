@@ -136,17 +136,19 @@ def generate_cover_pdf(
     if page_count > 80:
         # Register the font (assuming SF-Pro.ttf is in the same directory as the script)
         pdfmetrics.registerFont(TTFont("SF-Pro", "SF-Pro.ttf"))
-    
+
         # Define the PPI (Pixels Per Inch) for our high-resolution PDF
         PPI = 300
 
         # Calculate the maximum font size that will fit within the spine width
-        # We subtract twice the bleed margin from the spine width to get the available space for text
-        # Then multiply by PPI to convert from inches to pixels
+        # We subtract twice the bleed margin from the spine width to get the
+        # available space for text Then multiply by PPI to convert from inches
+        # to pixels
         max_font_size = (spine_width - (2 * bleed_margin)) * PPI
 
         # Cap the font size at 12pt (in pixels) for readability
-        # We multiply by 4 because at 300 PPI, 1 point is approximately 4 pixels (300 PPI / 72 points per inch ≈ 4.17)
+        # We multiply by 4 because at 300 PPI, 1 point is approximately 4
+        # pixels (300 PPI / 72 points per inch ≈ 4.17)
         font_size = min(12 * 4, max_font_size)
 
         # Convert font size from pixels to points for setFont and stringWidth calculations
@@ -154,7 +156,9 @@ def generate_cover_pdf(
         c.setFont("SF-Pro", font_size_pt)
 
         # Log the chosen font size for debugging
-        logging.info(f"Spine text font size: {font_size:.2f} pixels (approximately {font_size_pt:.2f} points)")
+        logging.info(
+            f"Spine text font size: {font_size:.2f} pixels (approximately {font_size_pt:.2f} points)"
+        )
 
         # Calculate the position for the spine text
         spine_center_x = wrap_margin + cover_width + (spine_width / 2)
