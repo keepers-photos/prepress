@@ -4,7 +4,7 @@ import os
 import logging
 
 from cover import generate_cover_pdf
-from internal import internal
+from internal import generate_internal_pdf
 
 # Configure logging
 logging.basicConfig(
@@ -54,7 +54,7 @@ if __name__ == "__main__":
         internal_output_path = os.path.join(
             args.output_path, f"{args.order_id}-internal.pdf"
         )
-        internal(args.input_path, internal_output_path, args.book_size)
+        generate_internal_pdf(args.input_path, internal_output_path, args.book_size)
         logging.info(f"Internal pages PDF generated: {internal_output_path}")
 
         # Check if the file was actually created in the output directory
