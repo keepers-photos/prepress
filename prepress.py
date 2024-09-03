@@ -10,13 +10,13 @@ from multiprocessing import Pool, cpu_count
 from PIL import Image, ImageDraw
 from reportlab.lib.units import inch
 
+from cover import generate_cover_pdf
+from utils import print_progress
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
-from utils import print_progress
-from cover import generate_cover_pdf
 
 
 def process_image(args):
