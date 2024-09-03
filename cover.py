@@ -185,8 +185,8 @@ def generate_cover_pdf(
             c.scale(scale_factor, 1)
             text_width_px *= scale_factor
 
-        # Set the fill color to light gray
-        c.setFillColorRGB(0.7, 0.7, 0.7)  # Light gray color
+        # Set the fill color to a darker gray (halfway between light gray and black)
+        c.setFillColorRGB(0.35, 0.35, 0.35)  # Darker gray color
 
         # Draw the string, converting back to the coordinate system used by drawString
         c.drawString(-text_width_px / (2 * PPI), 0, book_title)
