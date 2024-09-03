@@ -1,0 +1,4 @@
+Pillow==10.4.0
+pyright==1.1.378
+reportlab==4.2.2
+Wand==0.6.13

@@ -1,0 +1,207 @@
+
+# 2024-09-02 14:25:50.457510
++{
+
+# 2024-09-02 14:26:03.000763
++/add pcr.py
+
+# 2024-09-02 14:26:11.616630
++{
+
+# 2024-09-02 14:26:26.194460
++add `gutter_size` calculation based on the following table:
+
+# 2024-09-02 14:26:36.106346
++Page Count Add to Inside
++Safety Margin*
++Recommended
++Total Inside Margin*
++Less than 60 0 in or 0 mm 0.5 in or 13 mm
++61 to 150 0.125 in or 3 mm 0.625 in or 16 mm
++151 to 400 0.5 in or 13 mm 1 in or 25 mm
++400 to 600 0.625 in or 16 mm 1.125 in or 29 mm
++Over 600 0.75 in or 19 mm 1.25 in or 32 mm
+
+# 2024-09-02 14:26:37.718210
++}
+
+# 2024-09-02 14:32:21.041863
++/web https://assets.lulu.com/media/guides/en/lulu-book-creation-guide.pdf?_gl=1*xybpiq*_gcl_au*NjQ1NzMzMDgyLjE3MjIzMjg1OTQ.*_ga*NjAyNjYwMzI5LjE3MjIzMjg1OTU.*_ga_E4HSQJ4YSL*MTcyNTE4MzExNC43LjEuMTcyNTE4MzkyNi4wLjAuMA..&_ga=2.55285807.583533382.1725183115-602660329.1722328595
+
+# 2024-09-02 14:42:46.785421
++{
+
+# 2024-09-02 14:43:18.051522
++/add pcr.py
+
+# 2024-09-02 14:43:21.768717
++/drop pcr.py
+
+# 2024-09-02 14:43:24.397639
++/add pcr.py
+
+# 2024-09-02 14:43:33.468273
++{
+
+# 2024-09-02 14:43:42.040043
++update the __main__ to include the following:
+
+# 2024-09-02 14:44:30.367739
++1. book title; 
+
+# 2024-09-02 14:44:39.148152
++2. input_path;
+
+# 2024-09-02 14:44:51.394999
++3. output_path; 
+
+# 2024-09-02 14:45:02.655563
++4. order_id. something like 28912-0
+
+# 2024-09-02 14:45:40.314395
++5. option to generate only cover, only internal pages or everything. 
+
+# 2024-09-02 14:46:08.232695
++6. `is_hardcover`
+
+# 2024-09-02 14:46:12.565315
++}
+
+# 2024-09-02 14:48:49.847816
++add support for one more size: small square along with square size we already supported.add to a new argument.
+
+# 2024-09-02 14:49:33.830889
++let's remove `gutter_size` calculation.
+
+# 2024-09-02 14:50:44.265858
++{
+
+# 2024-09-02 14:50:55.336916
++book_size shouldn't be an option; it should be part of the argument; 
+
+# 2024-09-02 14:51:34.697325
++--is_hardcover can be cover_type with choices from {"soft_cover", "hard_cover"} with default as "hard_cover"
+
+# 2024-09-02 14:52:00.174933
++Further, use the order_id to construct the PDF name. 
+
+# 2024-09-02 14:52:24.650949
++For 28912-0, we should get 28912-0-cover.pdf and 28912-0-internal.pdf
+
+# 2024-09-02 14:52:26.011798
++}
+
+# 2024-09-02 21:35:55.567936
++/ask give me the shell command to run it
+
+# 2024-09-02 21:40:23.318533
++will you please add the two size options?
+
+# 2024-09-02 21:45:20.694276
++can you please add an `output_path` after the `input_path` and update the code and the comment?
+
+# 2024-09-02 21:46:16.924578
++/run python pcr.py "LOUIE JACK SKERLJ DANIELSON 27 SEPTEMBER 2024" ./0/ ./output/ 28912-0 --process pages --cover_type hard_cover --book_size square
+
+# 2024-09-02 21:48:43.617268
++replace the "Spine Text" with the parameter `book_title`
+
+# 2024-09-02 21:49:03.769185
++/run pip install pillow
+
+# 2024-09-02 21:52:58.998492
++add print in __main__ that tells the number of pages
+
+# 2024-09-02 22:07:23.838184
++how can you "Fonts: Embedded"
+
+# 2024-09-02 22:14:21.430489
++instead of Arial, use "SF-Pro"
+
+# 2024-09-02 22:18:53.125074
++`wrap_margin` is only applicable to hardcover books
+
+# 2024-09-02 22:22:44.513787
++front_cover should have a size of 8.5x8.5 inch
+
+# 2024-09-02 22:24:11.227204
++it should be 8.625 x 8.75" instead
+
+# 2024-09-02 22:27:30.224285
++add bleed and it should go along with `wrap_margin`
+
+# 2024-09-02 22:30:07.980329
++/undo
+
+# 2024-09-02 22:30:17.578595
++take off the bleed again
+
+# 2024-09-02 22:31:22.604620
++add `print` `spine_width`
+
+# 2024-09-02 22:37:42.643716
++`calculate_spine_width` is incorrect. 89 is between 85-140, it should have 0.5 inch; but the code you generated gives me 0.625. 
+
+# 2024-09-02 22:45:48.548721
++now add bleed 0.125 inch back
+
+# 2024-09-02 22:58:39.754406
++the `drawString` doesn't feel right. will you please double check it?
+
+# 2024-09-02 23:09:16.266022
++will you add a logo.jpg to the back cover? it's a square image 300dpi. I'd like it to be bottom but centered.
+
+# 2024-09-02 23:10:11.825783
++it's perfect except it's too big. make it 1/3 its size
+
+# 2024-09-02 23:22:06.964745
++generate a requirements.txt
+
+# 2024-09-02 23:22:18.176526
++/run pip install -r requirements.txt
+
+# 2024-09-02 23:29:53.154230
++{
+
+# 2024-09-02 23:30:01.809612
++small square is 7.75, not 7
+
+# 2024-09-02 23:30:16.727557
++the resize shouldn't leave a white border around it; 
+
+# 2024-09-02 23:30:50.442843
++}
+
+# 2024-09-02 23:32:10.402687
++/ask what does -extent do?
+
+# 2024-09-02 23:38:35.074030
++do you know why the -internal.pdf file is generated inside the input folder?
+
+# 2024-09-02 23:42:01.065886
++"Error processing ./0/87.png: Command '['convert', './0/87.png', '-density', '300', '-units', 'PixelsPerInch', '-resize', '2325x2325', '-background', 'white', '-quality', '100', '-compress', 'None', '/Users/alexdong/Library/CloudStorage/Dropbox/HappyMoose/Production/PrintReadyQueue/28912/raw_files/temp_processed/87.png']' returned non-zero exit status 1.
++"
+
+# 2024-09-02 23:43:17.984837
++/ask what the hell is f"{page_width}x{page_height}>" doing with >?
+
+# 2024-09-02 23:44:02.541523
++/ask we will never have smaller images. can i take it out?
+
+# 2024-09-02 23:45:47.124279
++it complains "unable to open image '0/78.png': No such file or directory @ error/blob.c/OpenBlob/3571.". is it possible that it has something to do with the chdir and getcwd changes you suggested? 
+
+# 2024-09-03 09:38:15.229988
++{
+
+# 2024-09-03 09:38:38.682622
++the soft_cover's cover.pdf shouldn't have a top bleed; 
+
+# 2024-09-03 09:39:05.544180
++also, the spin needs to have `bleed_margin` from the left of the image.
+
+# 2024-09-03 09:39:06.350022
++}
+
+# 2024-09-03 09:50:18.359321
++/ask what does "new_front_cover.paste" mean? why can't we use the `front_cover.thumbnail`?

@@ -1,0 +1,686 @@
+Book Creation Guide
+02
+Contents
+01
+File Creation....................................................3
+Interior Formatting..........................................4
+Text and Styling. ..............................................................4
+Color Options. .................................................................4
+Photo and Graphic Resolution....................................6
+Document Color Setup.................................................6
+Anatomy of a Book. ........................................................8
+Formatting Terms. ...........................................................9
+Gutter Area. ....................................................................10
+Gutter..............................................................................10
+Bleed Margin. ................................................................. 11
+Cover Layout..................................................13
+Lulu Generated Cover. .................................................13
+Create & Upload Your Own Cover. ...........................13
+Spine Width Guide. .......................................................13
+Spine Width Calculations............................................13
+Adjusting the Spine Width. ..........................................15
+Designing For The Spine . ...........................................17
+Trimming & Variance. ...................................................17
+File Submission............................................ 22
+File Preparation............................................. 23
+Interior File Specifications. ......................................... 24
+Cover File Specifications. ........................................... 24
+Proofing. ......................................................... 25
+Human Error................................................................. 25
+File Error. ........................................................................ 26
+Printing Variance. ......................................................... 26
+File Creation
+Interior Formatting
+Cover Layout
+Interior Formatting
+To publish and print your book, you will need an interior file in
+PDF format. This file must contain ALL the contents for your book
+(excluding the cover) and must be formatted, styled, and designed
+by you prior to uploading.
+We recommend using Microsoft Word for simple designs (novels,
+memoirs, poetry) and Adobe InDesign for complex projects (photo
+books, workbooks, textbooks). Please refer to your chosen page
+layout software for specific details about using that software.
+Text and Styling
+Use the Styles options in Word or InDesign (or your chosen tool) to
+define how your text will look. Using Styles ensures consistent text
+throughout your file.
+Likewise, use formatting options (like Page Breaks in Word) to
+control where your content is ‌ on the page. Avoid using inline
+formatting (like hard returns or paragraph breaks) as these may
+cause a shift in content when exporting your PDF.
+Color Options
+Lulu offers a variety of ink and paper options for your project.
+Ink
+•
+•
+•
+•
+Standard Premium Standard Premium Color
+Carefully review the options to determine the best for your project.
+•
+60# Uncoated Paper with Black & White ink is ideal for projects
+with few or no graphics, like novels, nonfiction, and memoir.
+Paper
+Black & White
+•
+60# Uncoated White
+Black & White
+•
+60# Uncoated Cream
+Color
+•
+80# Coated White
+LULU BOOK CREATION GUIDE
+FILE CREATION 4
+•
+•
+•
+For high contrast, grayscale images, 80# Coated White with
+Premium Black & White ink will provide quality printing at a
+reasonable cost.
+60# Uncoated White paper with Standard Color allows you to
+incorporate exciting elements such as colored fonts, highlights,
+charts, graphs, small photos, or low pigment/saturation color
+blocks into your printed work without the premium cost.
+Premium Color is perfect for high-resolution photos and Full
+Bleed page coverage. On 80# Coated White paper, you can
+exhibit beautiful graphics and vibrant colors.
+Photo and Graphic Resolution
+Pixels per inch (PPI) are used to describe the pixel density of a
+screen (computer monitor, smartphone, etc.). Dots per inch (DPI)
+refers to the print resolution of an image by counting the number
+of dots per printed inch. The more dots, the higher the quality of
+the print (more sharpness and detail). Most print-ready file formats
+know how to handle the conversion between the PPI and DPI.
+Image Resolution Comparison
+72 PPI
+150 PPI
+300 PPI
+The standard resolution
+for most graphics when
+appearing digitally.
+Minimum resolution for
+simple graphics intended
+for print.
+Ideal resolution for
+complex or detailed
+graphics intended for
+print.
+LULU BOOK CREATION GUIDE
+FILE CREATION 5
+Document Color Setup
+RGB is an additive process, meaning it adds red, green and blue
+together in varying amounts to produce other colors. CMYK is a
+subtractive process that uses different amounts of cyan, magenta,
+yellow and black to remove reflected colors from paper to create
+other colors.
+Printing uses CMYK, while RGB is used to display colors on screens.
+Luckily, advances in printing workflows have eliminated the
+necessity of converting from RGB to CMYK. For most projects,
+either color space will print without issue.
+Why are the Adobe InDesign templates set up in RGB?
+Modern workflows, like our process at Lulu, allow printers to use
+color profiles that automatically match CMYK ink to RGB values
+to produce results that are similar. Following these few simple
+guidelines will ensure the best color in your book:
+1. If you’re starting from scratch, set up your document as an
+RGB file.
+2. Use the sRGB color space in your RGB document color profile
+and apply the sRGB color space to any RGB images or links
+before you make your print-ready PDF.
+3. If you’ve already created or converted your file to CMYK and
+converted any images to CMYK, keep it in CMYK and do not
+switch back to RGB.
+4. Solid blacks will print solid at 100% with no other colors added.
+If you ‌ add color to improve the richness of the black, TAC
+(total area coverage) should never exceed 270%.
+5. Tint variation is difficult to control in light color (20% or less)
+designs.
+6. Black & white images should have the color space set to
+grayscale.
+LULU BOOK CREATION GUIDE
+FILE CREATION 6
+7. The gamma value of a grayscale image should be between 2.2
+and 2.4.
+8. Use only high resolution photos (300 DPI or higher) and
+ensure they are consistent with the document color space,
+using RGB or CMYK.
+9. Use Premium Color ink and 80# White Uncoated paper when
+printing any book with heavy ink coverage.
+Lulu Printer Color Space Profiles:
+RGB: sRGB IEC61966–2.1
+CMYK: Coated GRACoL 2006
+LULU BOOK CREATION GUIDE
+FILE CREATION 7
+Anatomy of a Book
+BACK COVER
+FRONT COVER
+Book Cover
+INTERIOR
+Book Interior
+LULU BOOK CREATION GUIDE
+FILE CREATION 8
+Formatting Terms
+Total Document Size
+The total dimensions of the file with bleed included.
+Spine Area
+The spine width varies based on the number of pages included in
+your book. Use the ‌ formula or table to determine spine width for
+Paperback and Hardcover books. Coil Bound and Saddle Stitch
+books do not require spine calculations.
+Safety Margin
+The border between the trimmed edge and important content
+(e.g. text, images, page numbers) to prevent unintended trimming.
+Bleed Area
+To give books a smooth edge, the pages are printed oversized
+and trimmed down. This extra paper that is trimmed away is
+called ‘bleed.’ Lulu requires a 0.125 in/3.175 mm bleed margin for
+all files. See “File Dimension and Full Bleed” section (page 11) for
+more information.
+Barcode Area (Optional)
+Space reserved for your ISBN barcode. Books not intended for
+Global Distribution do not require a barcode or ISBN. Lulu does
+not generate or insert your barcode or ISBN for you.
+Gutter Area (Shown on page 10)
+The gutter is the point where your pages meet. To make books
+easier to read, the page margins in the gutter should be larger
+than the page margins on the other three sides of the page. See
+“Gutter Additions” section (page 10) for more information.
+LULU BOOK CREATION GUIDE
+FILE CREATION 9
+Gutter Area
+INTERIOR
+PAGE LEFT OF SPINE INTERIOR
+PAGE RIGHT OF SPINE
+Gutter
+The gutter is simply an increased page margin on the binding side
+of facing pages to account for the portion of the page inserted and
+glued into the bookbinding. If your book includes over 60 pages,
+we recommend adding a gutter to your pages.
+Coil Bound and Saddle Stitch books do not require a gutter.
+If you are creating a Paperback or Hardcover book, reference the
+gutter table:
+*Only add gutter to the page margin of side facing spine
+LULU BOOK CREATION GUIDE
+FILE CREATION Page Count Add to Inside
+Safety Margin*
+Recommended
+Total Inside Margin*
+Less than 60 0 in or 0 mm 0.5 in or 13 mm
+61 to 150 0.125 in or 3 mm 0.625 in or 16 mm
+151 to 400 0.5 in or 13 mm 1 in or 25 mm
+400 to 600 0.625 in or 16 mm 1.125 in or 29 mm
+Over 600 0.75 in or 19 mm 1.25 in or 32 mm
+10
+When to Use Full Bleed
+Yes
+Yes
+Not Needed
+If your file includes
+accents and graphics
+intended to extend to the
+page edge.
+When graphics or
+content extend over the
+edge of the page.
+If your file has distinct
+white margins around
+the body.
+Bleed Margin
+When manufacturing your book, we print the interior pages
+oversized. Then all the pages are trimmed to a uniform size. The
+paper trimmed away is called the ‘bleed.’
+We print all book files with a bleed margin of 0.125 in/3.175 mm on
+all sides so we can trim the pages to a uniform size.
+If your file does not include graphics, fills, or content that extends
+to the edge of the page, you can prepare your file at the book’s
+final trim size and our system will automatically add the 0.125
+in/3.175 mm bleed.
+If your formatted file includes graphics, fills, or content that extends
+to the edge of the page, use the chart on page 12 to determine
+your interior file dimensions.
+LULU BOOK CREATION GUIDE
+FILE CREATION 11
+Trim Name Trim Size
+Interior File
+Dimensions
+- No Bleed
+Interior File
+Dimensions
+- With Bleed
+Pocketbook 4.25 in x 6.875 in
+108 mm x 175 mm
+4.25 in x 6.875 in
+108 mm x 175 mm
+4.5 in x 7.125 in
+114 mm x 181 mm
+Digest 5.5 in x 8.5 in
+140 mm x 216 mm
+5.5 in x 8.5 in
+140 mm x 216 mm
+5.75 in x 8.75 in
+146 mm x 222 mm
+A5 5.83 in x 8.27 in
+148 mm x 210 mm
+5.83 in x 8.27 in
+148 mm x 210 mm
+6.08 in x 8.52 in
+154 mm x 216 mm
+Royal 6.14 in x 9.21 in
+156 mm x 234 mm
+6.14 in x 9.21 in
+156 mm x 234 mm
+6.39 in x 9.46 in
+162 mm x 240 mm
+US Trade 6 in x 9 in
+152 mm x 229 mm
+6 in x 9 in
+152 mm x 229 mm
+6.25 in x 9.25 in
+159 mm x 235 mm
+Comic Book 6.63 in x 10.25 in
+168 mm x 260 mm
+6.63 in x 10.25 in
+168 mm x 260 mm
+6.88 in x 10.5 in
+175 mm x 267 mm
+Executive 7 in x 10 in
+178 mm x 254 mm
+7 in x 10 in
+178 mm x 254 mm
+7.25 in x 10.25 in
+184 mm x 260 mm
+Crown Quarto 7.44 in x 9.68 in
+189 mm x 246 mm
+7.44 in x 9.68 in
+189 mm x 246 mm
+7.69 in x 9.93 in
+195 mm x 252 mm
+Small Square 7.5 in x 7.5 in
+191 mm x 191 mm
+7.5 in x 7.5 in
+191 mm x 191 mm
+7.75 in x 7.75 in
+197 mm x 197 mm
+A4 8.27 in x 11.69 in
+210 mm x 297 mm
+8.27 in x 11.69 in
+210 mm x 297 mm
+8.52 in x 11.94 in
+216 mm x 303 mm
+Square 8.5 in x 8.5 in
+216 mm x 216 mm
+8.5 in x 8.5 in
+216 mm x 216 mm
+8.75 in x 8.75 in
+222 mm x 222 mm
+US Letter 8.5 in x 11 in
+216 mm x 279 mm
+8.5 in x 11 in
+216 mm x 279 mm
+8.75 in x 11.25 in
+222 mm x 286 mm
+Small
+Landscape
+9 in x 7 in
+229 mm x 178 mm
+9 in x 7 in
+229 mm x 178 mm
+9.25 in x 7.25 in
+235 mm x 184 mm
+US Letter
+Landscape
+11 in x 8.5 in
+279 mm x 216 mm
+11 in x 8.5 in
+279 mm x 216 mm
+11.25 in x 8.75 in
+286 mm x 222 mm
+A4 Landscape 11.69 in x 8.27 in
+210 mm x 297 mm
+11.69 in x 8.27 in
+210 mm x 297 mm
+11.94 in x 8.52 in
+303 mm x 216 mm
+Calendar 11 in x 8.5 in
+279 mm x 216 mm
+11 in x 8.5 in
+279 mm x 216 mm
+11.25 in x 8.75 in
+286 mm x 222 mm
+LULU BOOK CREATION GUIDE
+FILE CREATION 12
+Cover Layout
+Lulu Generated Cover
+Pick from our book cover templates to create a cover complete
+with the title, subtitle, contributor(s), and description. This is a great,
+quick option when you are short on time or simply need proof
+copies.
+Create & Upload Your Own Cover
+Once you have uploaded your interior file, we will generate a cover
+template you can download that is custom crafted to your book’s
+specifications. Use that template to create a cover for your book.
+After completing your cover, export it as a flattened, font
+embedded PDF to upload to Lulu.
+Spine Width Guide
+The width of your spine is determined by your page count.
+Paperback books require a minimum of 32 interior pages and
+hardcover books require a minimum of 24 interior pages.
+After uploading your interior file, we provide a customized cover
+template with the spine area sized to match your book’s page
+count. If you plan to design your own cover or commission a
+cover from a graphic designer, ‌ use the cover template created after
+uploading your interior file to get the exact spine measurements.
+Spine Width Calculations
+If you prefer to create your cover before uploading your interior file,
+you must determine the spine size based on your page count and
+adjust the cover templates we provide in our design bundles.
+LULU BOOK CREATION GUIDE
+FILE CREATION 13
+METRIC
+IMPERIAL
+Paperback Covers
+Use the formula to calculate the spine width.
+Spine Width in Inches =
+(# of Interior Pages / 444) + 0.06 in
+Spine Width in Millimeters =
+(# of Interior Pages / 17.48) + 1.524 mm
+Hardcover Covers
+Use the table to determine the spine width.
+Page Count Spine Width (inches) Spine Width (mm)
+0-23 N/A N/A
+*24-84 0.25 in 6 mm
+85-140 0.5 in 13 mm
+141-168 0.625 in 16 mm
+169-194 0.688 in 17 mm
+195-222 0.75 in 19 mm
+223-250 0.813 in 21 mm
+251-278 0.875 in 22 mm
+279-306 0.938 in 24 mm
+307-334 1 in 25 mm
+335-360 1.063 in 27 mm
+361-388 1.125 in 29 mm
+389-416 1.188 in 30 mm
+417-444 1.25 in 32 mm
+445-472 1.313 in 33 mm
+473-500 1.375 in 35 mm
+501-528 1.438 in 37 mm
+529-556 1.5 in 38 mm
+557-582 1.563 in 40 mm
+LULU BOOK CREATION GUIDE
+FILE CREATION 14
+Page Count Spine Width (inches) Spine Width (mm)
+583-610 1.625 in 41 mm
+611-638 1.688 in 43 mm
+639-666 1.75 in 44 mm
+667-694 1.813 in 46 mm
+695-722 1.875 in 48 mm
+723-750 1.938 in 49 mm
+751-778 2 in 51 mm
+779-799 2.063 in 52 mm
+800 2.125 in 54 mm
+Adjusting the Spine Width
+If you intend to create your spine without using the custom
+template we provide, you will need to adjust the spine width
+yourself. The following instructions using Adobe InDesign and
+Adobe Photoshop detail how to adjust your spine width.
+Adobe InDesign
+Use the page tool to adjust the spine page width.
+1. Locate the Page Tool from the tools panel and select it.
+2. In the pages panel, click on the spine page (page 2 of the
+spread). The page will appear highlighted in the pages panel.
+Specify the following settings in the Liquid Layout control
+panel (Window > Interactive > Liquid Layout):
+; Liquid Page Rule: Object-based
+; Object Constraints: Resize with Page: Width
+3. After determining your spine dimensions by using the formula
+(Paperback) or the calculator table (Hardcover) found in this
+PDF, resize the page with the Height and Width widgets in the
+control bar. The entire cover should update automatically and
+is now ready for your artwork.
+LULU BOOK CREATION GUIDE
+FILE CREATION 15
+Adobe Photoshop
+Adjust the canvas size, revise the spine width, and
+position the cover guides.
+1. Subtract the existing minimum spine width dimension listed on
+the front cover from the spine dimension found by using the
+formula (Paperback) or the table (Hardcover) in this PDF and
+add that value to the canvas size. Go to Image > Canvas Size
+and enter in the revised total width.
+2. Use the path selection tool to select the spine shape layer in
+the guides folder and enter the correct width found using the
+formula or table.
+3. Center align the spine guide, right align the front cover guide,
+and left align the back cover guide to the document spread.
+Make sure guide layers are positioned correctly and there are
+no issues.
+Note: The document must be setup with facing pages checked for the
+front cover page to automatically shuffle.
+Watch & Learn on YouTube
+•
+Interior and Cover File Setup Using Adobe InDesign
+•
+Interior and Cover File Setup Using Affinity Publisher
+•
+Cover File Setup Using Adobe Photoshop
+LULU BOOK CREATION GUIDE
+FILE CREATION 16
+Designing for the Spine
+When your book cover is trimmed, it may cause slight variance
+in the spine’s position. To allow for this variance, follow these
+guidelines:
+1. Do not include text that fills the entire width of the spine. Any
+variance will cause text from the spine to run over onto the
+front or back cover. Leave at least 0.125 in/3.175 mm between
+the spine text and the edge of the spine on both sides of the
+text.
+2. If your book is 80 pages or fewer, do not include spine text.
+For books with a low page count, the slightest shift of spine
+placement will cause your spine text to run over onto the front
+or back cover.
+3. Keep the spine the same color/graphic as the rest of the cover.
+4. If your spine will be a different color from the rest of the
+cover, design the cover to include the spine color or graphic
+wrapping around the front and back covers.
+Trimming & Variance
+There are tolerances to consider when designing both your interior
+and cover. When building your files, follow the guidelines below to
+ensure your project is printed correctly.
+Our trimming tolerance is 0.125 in/3.175 mm toward the front and
+back cover.
+The templates we provide for your interior and cover include a 0.5
+in/12.7 mm safety margin. This is in part to help you avoid issues
+with spine text alignment on the cover and cut off text/images in
+the interior file.
+LULU BOOK CREATION GUIDE
+FILE CREATION 17
+Back Cover Front Cover
+Spine
+ISBN 978-1-79471-012-2
+90000
+9
+781794
+710122
+(A5 Paperback)
+Trim Edge
+This is the edge of the final printed book cover.
+Bleed Edge
+IImages should be pushed out to the Bleed Edge, 0.125 in/3.175
+mm past the Trim Edge on every side.
+Safety Margin
+The Safety Margin is 0.5 in/12.7 mm inside the Trim Edge. Text
+and other important elements should be placed within the Safety
+Margin.
+Trim Variance Cover Examples (pages 19-21)
+LULU BOOK CREATION GUIDE
+FILE CREATION 18
+Correct
+The background image has been extended 0.125 in/3.175 mm past
+the Trim Edge and both the text and important artwork are within
+the Safety Margin.
+Back Cover Front Cover
+Spine
+ISBN 978-1-79471-012-2
+90000
+9
+781794
+710122
+LULU BOOK CREATION GUIDE
+FILE CREATION 19
+Incorrect
+The background image has not been extended to the Bleed Edge.
+This could cause strips of white around the edges of the cover.
+Back Cover Front Cover
+Spine
+ISBN 978-1-79471-012-2
+90000
+9
+781794
+710122
+Incorrect Formatting Result
+LULU BOOK CREATION GUIDE
+FILE CREATION 20
+Incorrect
+The back cover text and spine text have not been kept within the
+Safety Margin. This could cause text being cut off because of
+variance during trimming.
+Back Cover Front Cover
+Spine
+ISBN 978-1-79471-012-2
+90000
+9
+781794
+710122
+Incorrect Formatting Result
+LULU BOOK CREATION GUIDE
+FILE CREATION 21
+File Submission
+File Preparation
+Proofing
+File Preparation
+When you upload your interior file to Lulu, we scan and analyze it
+to ensure it will print correctly. If it’s just a little off, we will make
+a few slight adjustments. Sometimes our system determines a big
+change is required. If this is the case, we’ll alert you. We strongly
+recommend you download and review your print ready files
+before completing the publishing process.
+Using Lulu’s PDF Job Options
+Job Options files apply settings based on our printer
+requirements. When creating a PDF with Adobe
+Products, use Lulu’s Adobe Job Options to export a print-
+ready PDF optimized for our printers.
+Lulu’s design bundles (found on the Product page)
+include the Job Options files (a single page setting for
+Interior files and a spread page setting for Cover files).
+Job Options files should automatically install when you
+open the file. If they do not, manually install the files:
+Adobe InDesign
+1. Go to: Choose File > Adobe PDF Presets > Define.
+2. Click Load and select the .joboptions file.
+3. Export your file, select Lulu’s settings from the ‘Adobe
+PDF Preset’ drop-down list to export as a PDF using
+the Job Options settings.
+Adobe Photoshop
+1. Go to: Edit > Adobe PDF Presets.
+2. Click Load and select the .joboptions file.
+3. Use ‘Save as Photoshop PDF’ and select the
+.joboptions settings from the drop-down menu.
+LULU BOOK CREATION GUIDE
+FILE SUBMISSION 23
+Adobe Acrobat Distiller
+1. Go to: Settings > Add Adobe PDF Settings.
+2. Navigate to the .joboptions file and click OK.
+3. The new settings will be available in the ‘Default
+Settings’ drop-down list. Make sure to select them
+before importing your Postscript (.PS) file.
+Interior File Specifications
+When creating your book, you must provide a single page PDF
+containing all interior elements. This includes the title and copyright
+pages, as well as any blank pages you wish to include.
+Specifications:
+•
+Single page, portrait oriented layout
+•
+Embedded images are 300 PPI resolution minimum, not
+exceeding 600 PPI resolution
+•
+Vector images are rasterized
+•
+All fonts are embedded
+•
+Transparent layers and vector objects are flattened
+•
+Pages sized to match intended trim size:
+Trim Size = 6 x 9 in/152.4 x 228.6 mm
+Page Size = 6.25 x 9.25 in/158.75 x 234.95 mm
+•
+A minimum 0.5 in/12.7 mm Safety Margin
+•
+A minimum 0.2 in/2.08 mm Gutter Margin
+•
+Do NOT include trim, bleed, or margin lines
+•
+Do NOT use any security/password file protection
+Cover File Specifications
+Your cover must be a single page integrated spread PDF (back
+cover, spine, and front cover) that includes all cover content. Lulu
+will provide a cover template with exact spine dimensions included
+after you upload your interior PDF. We strongly recommend using
+this template to ensure your cover PDF prints and trims correctly.
+LULU BOOK CREATION GUIDE
+FILE SUBMISSION 24
+Specifications:
+•
+Embedded images are 300 PPI resolution minimum, not
+exceeding 600 PPI resolution
+•
+Vector images are rasterized
+•
+All fonts are embedded
+•
+Transparent layers and vector objects are flattened
+•
+Spine sized to match intended book size—see page 13 for spine
+width calculation
+•
+Include 0.125 in/3.175 mm Bleed Margin
+•
+A minimum 0.5 in/12.7 mm Safety Margin
+•
+Do NOT include trim, bleed, or margin lines
+•
+Do NOT use any security/password file protection
+Magazine and Comic Book Covers
+If you are creating a Magazine or Comic Book, you will be able to
+print on the inside front and back cover. This printing requires a
+two-page cover file. Please refer to the Magazine and Comic Book
+cover template for more information.
+Proofing
+Once you’ve completed the publishing process, we strongly
+recommend purchasing a single copy to review before making the
+book available for sale. Proofing your printed material is critical in
+troubleshooting and identifying mistakes. Some issues you may
+discover while proofing include:
+Human Error
+Formatting inconsistencies and typos can slip through the editing
+and design process. Your proof copy is an opportunity to look for
+those kinds of errors and correct them. The best solution is to edit
+the interior file, re-upload, and order a new proof copy.
+LULU BOOK CREATION GUIDE
+FILE SUBMISSION 25
+File Error
+Low image resolution, transparencies, and unembedded fonts
+are common issues that may not be obvious when viewing your
+manuscript on a screen. Our system will detect and repair many of
+these issues, but some may slip through. If you discover an error
+in your printed book that does not appear in your electronic file,
+please contact us for help.
+Printing Variance
+Our trimming tolerance is 0.125 in/3.175 mm toward the front
+and back cover. Designing your content with sufficient margins
+and variance in mind will help you avoid issues with spine text
+alignment and cut off text/images around the edges of your page.
+LULU BOOK CREATION GUIDE
+FILE SUBMISSION 26
