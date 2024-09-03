@@ -7,6 +7,7 @@ from multiprocessing import Pool, cpu_count
 
 from utils import print_progress
 
+
 def process_image(args):
     input_file, output_file, is_right_page, book_size = args
     if book_size == "square":
@@ -44,6 +45,7 @@ def process_image(args):
         logging.error(f"stdout: {e.stdout}")
         logging.error(f"stderr: {e.stderr}")
         return None
+
 
 def internal(input_path, output_path, book_size):
     input_path = os.path.abspath(input_path)
