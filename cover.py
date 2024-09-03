@@ -91,7 +91,9 @@ def generate_cover_pdf(
 
     # Load and resize the front cover image
     front_cover = Image.open(front_cover_path)
-    front_cover = front_cover.resize((int(cover_width), int(cover_height)), Image.LANCZOS)
+    front_cover = front_cover.resize(
+        (int(cover_width), int(cover_height)), Image.LANCZOS
+    )
 
     # Log the size including wrap, bleed, and spine width
     logging.info(
@@ -136,9 +138,9 @@ def generate_cover_pdf(
         pdfmetrics.registerFont(TTFont("SF-Pro", "SF-Pro.ttf"))
         c.setFont("SF-Pro", 12)
 
-        # Calculate the position for the spine text.
-        # -bleed_margin is to account for the bleed margin on the right side of the spine
-        spine_center_x = wrap_margin + cover_width - bleed_margin + (spine_width / 2)
+        # Calculate the position for the spine text. Note that the spine text height plus
+        # 2 * bleed_margin should not exceed the total spine width.
+        spine_center_x = wrap_margin + cover_width + bleed_margin + (spine_width / 2)
         spine_center_y = total_height / 2
 
         # Save the current state
