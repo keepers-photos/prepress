@@ -72,12 +72,12 @@ def calculate_spine_width(page_count, is_hardcover=False):
         return (page_count / 444 + 0.06) * inch
 
 def generate_cover_pdf(
-    front_cover_path, output_path, page_count, is_hardcover=False, book_title=""
+    front_cover_path, output_path, page_count, size_type="square", is_hardcover=False, book_title=""
 ):
     # Define bleed margin
     bleed_margin = 0.125 * inch
-    cover_width = 8.5 * inch + bleed_margin
-    cover_height = 8.5 * inch + 2 * bleed_margin
+    cover_width = (8.5 if size_type == "square" else 7.5) * inch + bleed_margin
+    cover_height = (8.5 if size_type == "square" else 7.5) * inch + 2 * bleed_margin
 
     # Define wrap margins (only for hardcover)
     wrap_margin = 0.75 * inch if is_hardcover else 0
@@ -95,9 +95,8 @@ def generate_cover_pdf(
 
     # Log the size including wrap, bleed, and spine width
     logging.info(
-        f"Cover size (with wrap and bleed): {total_width / inch:.2f} x {total_height / inch:.2f} inch"
+        f"Cover size (with wrap and bleed): {total_width / inch:.2f} x {total_height / inch:.2f} inch / ({total_width:.2f}mm x {total_height:.2f}mm)"
     )
-    logging.info(f"({total_width:.2f}mm x {total_height:.2f}mm)")
     logging.info(f"Spine width: {spine_width / inch:.3f} inch ({spine_width:.2f}mm)")
 
     # Create a new image for the full cover (front, spine, back, with margins and bleed)

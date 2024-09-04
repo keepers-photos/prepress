@@ -93,6 +93,7 @@ if __name__ == "__main__":
                 front_cover_path,
                 cover_output_path,
                 page_count,
+                args.book_size,
                 args.cover_type == "hard_cover",
                 args.book_title,
             )
