@@ -8,6 +8,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import logging
+
 from utils import process_image
 
 def calculate_spine_width(page_count, is_hardcover=False):
