@@ -131,8 +131,8 @@ def generate_cover_pdf(
     # Create the PDF
     c = canvas.Canvas(output_path, pagesize=(total_width, total_height))
 
-    # Draw the full cover image
-    c.drawInlineImage(full_cover, 0, 0, total_width, total_height)
+    # Draw the full cover image with 300 DPI
+    c.drawInlineImage(full_cover, 0, 0, total_width, total_height, preserveAspectRatio=True, anchor='c', pdfImage={'dpi': 300})
 
     # Add spine text here if the page_count is over 80
     if page_count > 80:
