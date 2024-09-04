@@ -17,6 +17,7 @@ def print_progress(
     bar = fill * filled_length + "-" * (length - filled_length)
     logging.info(f"\r{prefix} |{bar}| {percent}% {suffix}")
 
+
 def process_image(input_file, output_file, width, height):
     command = [
         "convert",
