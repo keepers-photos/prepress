@@ -55,18 +55,27 @@ def generate_interior_pdf(input_path, output_path, book_size):
         return
 
     logging.info("Combining images into PDF...")
-    combine_command = ["convert", *processed_files, output_path]
+    combine_command = [
+        "convert",
+        "-density", "300",
+        "-units", "PixelsPerInch",
+        *processed_files,
+        "-compress", "jpeg",
+        "-quality", "100",
+        output_path
+    ]
 
     try:
         subprocess.run(
             combine_command,
             check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
         logging.info(f"PDF created successfully at {output_path}")
     except subprocess.CalledProcessError as e:
         logging.error(f"Error occurred while creating PDF: {e}")
+        logging.error(f"Stderr: {e.stderr.decode()}")
 
     logging.info("Cleaning up temporary files...")
     for file in processed_files:
