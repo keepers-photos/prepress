@@ -239,3 +239,21 @@
 
 # 2024-09-04 10:53:03.015776
 +/ask how do i increase the letter spacing for spine text?
+
+# 2024-09-04 13:04:56.916891
++/add cover.py
+
+# 2024-09-04 13:04:59.743173
++/add interior.py
+
+# 2024-09-04 13:05:02.138461
++/add utils.py
+
+# 2024-09-04 13:05:33.683355
++will you please move `process_image` to utils.py and use it to preprocess cover image as well
+
+# 2024-09-04 13:10:38.628630
++/add cover.py
+
+# 2024-09-04 13:11:11.560496
++can you set the DPI of the cover canvas to 300? I'm getting this error: Images: Your file contains images with resolution less than 200 pixels per inch. Lulu suggests using images with a pixel per inch range of 200-600 for the best results.

@@ -21,6 +21,8 @@ def process_image(input_file, output_file, width, height):
     command = [
         "convert",
         input_file,
+        "-colorspace",
+        "sRGB",
         "-density",
         "300",
         "-units",

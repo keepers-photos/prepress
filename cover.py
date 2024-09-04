@@ -81,6 +81,7 @@ def generate_cover_pdf(
     bleed_margin = 0.125 * inch
     cover_width = (8.5 if size_type == "square" else 7.5) * inch + bleed_margin
     cover_height = (8.5 if size_type == "square" else 7.5) * inch + 2 * bleed_margin
+    DPI = (300, 300)
 
     # Define wrap margins (only for hardcover)
     wrap_margin = 0.75 * inch if is_hardcover else 0
@@ -96,6 +97,8 @@ def generate_cover_pdf(
 
     process_image(front_cover_path, processed_cover_path, int(cover_width), int(cover_height))
     front_cover = Image.open(processed_cover_path)
+    front_cover.info["dpi"] = DPI
+    logging.info(f"Front cover: {front_cover.info['dpi']} DPI")
 
     # Log the size including wrap, bleed, and spine width
     logging.info(
@@ -105,6 +108,7 @@ def generate_cover_pdf(
 
     # Create a new image for the full cover (front, spine, back, with margins and bleed)
     full_cover = Image.new("RGB", (int(total_width), int(total_height)), color="white")
+    full_cover.info["dpi"] = DPI
 
     # Calculate the x-coordinate for pasting the front cover
     front_cover_x = int(wrap_margin + cover_width + spine_width)
@@ -119,6 +123,7 @@ def generate_cover_pdf(
     # Load and paste the logo on the back cover
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
     logo = Image.open(logo_path)
+    logo.info["dpi"] = DPI
     logo_size = int(2 * inch / 3)  # Set logo size to 2/3 inch (1/3 of original 2 inches)
     logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
 
@@ -130,9 +135,7 @@ def generate_cover_pdf(
 
     # Create the PDF
     c = canvas.Canvas(output_path, pagesize=(total_width, total_height))
-
-    # Draw the full cover image with 300 DPI
-    c.drawInlineImage(full_cover, 0, 0, total_width, total_height, preserveAspectRatio=True, anchor='c', pdfImage={'dpi': 300})
+    c.drawInlineImage(full_cover, 0, 0, total_width, total_height)
 
     # Add spine text here if the page_count is over 80
     if page_count > 80:
