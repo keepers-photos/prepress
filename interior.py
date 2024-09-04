@@ -1,11 +1,10 @@
 # pyright: reportMissingModuleSource=false
 
 import os
-import subprocess
 import logging
 from multiprocessing import Pool, cpu_count
 
-from utils import print_progress, process_image
+from utils import print_progress, process_image, create_pdf
 
 
 def generate_interior_pdf(input_path, output_path, book_size):
@@ -21,9 +20,6 @@ def generate_interior_pdf(input_path, output_path, book_size):
         logging.warning(f"No matching PNG files found in {input_path}")
         return
 
-    temp_dir = os.path.join(os.path.dirname(output_path), "temp_processed")
-    os.makedirs(temp_dir, exist_ok=True)
-
     if book_size == "square":
         page_size = 2625  # 8.75 inches at 300 DPI
     elif book_size == "small_square":
@@ -38,11 +34,10 @@ def generate_interior_pdf(input_path, output_path, book_size):
         args = [
             (
                 os.path.join(input_path, f),
-                os.path.join(temp_dir, f"{i}.png"),
                 page_size,
                 page_size,
             )
-            for i, f in enumerate(png_files, start=1)
+            for f in png_files
         ]
         for i, result in enumerate(pool.starmap(process_image, args), 1):
             processed_files.append(result)
@@ -55,29 +50,8 @@ def generate_interior_pdf(input_path, output_path, book_size):
         return
 
     logging.info("Combining images into PDF...")
-    combine_command = [
-        "convert",
-        "-density", "300",
-        "-units", "PixelsPerInch",
-        *processed_files,
-        "-compress", "jpeg",
-        "-quality", "100",
-        output_path
-    ]
-
-    try:
-        subprocess.run(
-            combine_command,
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        logging.info(f"PDF created successfully at {output_path}")
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Error occurred while creating PDF: {e}")
-        logging.error(f"Stderr: {e.stderr.decode()}")
+    create_pdf(processed_files, output_path, dpi=300)
 
     logging.info("Cleaning up temporary files...")
     for file in processed_files:
         os.remove(file)
-    os.rmdir(temp_dir)

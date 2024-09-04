@@ -2,8 +2,10 @@
 
 import os
 import logging
+import tempfile
 from PIL import Image, ImageDraw, ImageFont
 from wand.image import Image as WandImage
+from utils import create_pdf
 
 def calculate_spine_width(page_count, is_hardcover=False):
     # ... (keep the existing function as is)
@@ -18,7 +20,7 @@ def generate_cover_pdf(
     debug_mode=False
 ):
     """
-    Generate a cover PDF using PIL/Pillow instead of ReportLab.
+    Generate a cover PDF using PIL/Pillow and img2pdf.
     
     This function performs the following steps:
     1. Load and process the front cover image
@@ -26,7 +28,7 @@ def generate_cover_pdf(
     3. Add wrap margin if needed (for hardcover)
     4. Add logo to the back cover
     5. Add spine text if the page count is over 80
-    6. Convert the final image to PDF
+    6. Convert the final image to PDF using img2pdf
     
     The function maintains a 300 DPI resolution throughout the process and
     converts the color profile from AdobeRGB to sRGB.
@@ -99,8 +101,16 @@ def generate_cover_pdf(
     if debug_mode:
         full_cover.save(f"{output_path}_debug_3_with_spine_text.png")
     
-    # Save as PDF
-    full_cover.save(output_path, "PDF", resolution=DPI)
+    # Save as temporary PNG file
+    with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+        full_cover.save(temp_file, "PNG", resolution=DPI)
+        temp_file_path = temp_file.name
+
+    # Convert PNG to PDF using img2pdf
+    create_pdf([temp_file_path], output_path, dpi=DPI)
+    
+    # Remove temporary file
+    os.unlink(temp_file_path)
     
     logging.info(f"Cover PDF generated: {output_path}")
     if debug_mode:
