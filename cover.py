@@ -11,6 +11,7 @@ import logging
 
 from utils import process_image
 
+
 def calculate_spine_width(page_count, is_hardcover=False):
     if is_hardcover:
         # Hardcover spine width calculation
@@ -74,8 +75,14 @@ def calculate_spine_width(page_count, is_hardcover=False):
         # Paperback spine width calculation
         return (page_count / 444 + 0.06) * inch
 
+
 def generate_cover_pdf(
-    front_cover_path, output_path, page_count, size_type="square", is_hardcover=False, book_title=""
+    front_cover_path,
+    output_path,
+    page_count,
+    size_type="square",
+    is_hardcover=False,
+    book_title="",
 ):
     # Define bleed margin
     bleed_margin = 0.125 * inch
@@ -95,7 +102,9 @@ def generate_cover_pdf(
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
         processed_cover_path = temp_file.name
 
-    process_image(front_cover_path, processed_cover_path, int(cover_width), int(cover_height))
+    process_image(
+        front_cover_path, processed_cover_path, int(cover_width), int(cover_height)
+    )
     front_cover = Image.open(processed_cover_path)
     front_cover.info["dpi"] = DPI
     logging.info(f"Front cover: {front_cover.info['dpi']} DPI")
@@ -124,8 +133,10 @@ def generate_cover_pdf(
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
     logo = Image.open(logo_path)
     logo.info["dpi"] = DPI
-    logo_size = int(2 * inch / 3)  # Set logo size to 2/3 inch (1/3 of original 2 inches)
-    logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
+    logo_size = int(
+        2 * inch / 3
+    )  # Set logo size to 2/3 inch (1/3 of original 2 inches)
+    logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
 
     # Calculate logo position (centered horizontally, 1 inch from bottom)
     logo_x = int(wrap_margin + (cover_width - logo_size) / 2)
@@ -160,7 +171,9 @@ def generate_cover_pdf(
         )
 
         # Function to draw text with letter spacing
-        def draw_text_with_spacing(canvas, text, x, y, font_name, font_size, letter_spacing):
+        def draw_text_with_spacing(
+            canvas, text, x, y, font_name, font_size, letter_spacing
+        ):
             canvas.saveState()
             canvas.setFont(font_name, font_size)
             for char in text:
@@ -170,7 +183,9 @@ def generate_cover_pdf(
 
         # Calculate the position for the spine text
         spine_center_x = wrap_margin + cover_width + spine_width / 2
-        spine_top_y = total_height - 1 * inch - wrap_margin - bleed_margin  # Start 1 inch from the top
+        spine_top_y = (
+            total_height - 1 * inch - wrap_margin - bleed_margin
+        )  # Start 1 inch from the top
 
         # Save the current state
         c.saveState()
@@ -183,7 +198,9 @@ def generate_cover_pdf(
         letter_spacing = 2  # 2 point spacing between letters
 
         # Calculate the width of the text with letter spacing
-        text_width_pt = sum(pdfmetrics.stringWidth(char, "SF-Pro", font_size_pt) for char in book_title) + letter_spacing * (len(book_title) - 1)
+        text_width_pt = sum(
+            pdfmetrics.stringWidth(char, "SF-Pro", font_size_pt) for char in book_title
+        ) + letter_spacing * (len(book_title) - 1)
         text_width_px = text_width_pt * 4  # Convert back to pixels
 
         # Ensure text fits within spine length (in pixels)
@@ -198,7 +215,15 @@ def generate_cover_pdf(
         c.setFillColorRGB(0.35, 0.35, 0.35)  # Darker gray color
 
         # Draw the string with letter spacing
-        draw_text_with_spacing(c, book_title, -text_width_px / (2 * PPI), 0, "SF-Pro", font_size_pt, letter_spacing)
+        draw_text_with_spacing(
+            c,
+            book_title,
+            -text_width_px / (2 * PPI),
+            0,
+            "SF-Pro",
+            font_size_pt,
+            letter_spacing,
+        )
 
         # Reset the fill color to black for other elements
         c.setFillColorRGB(0, 0, 0)
