@@ -51,8 +51,11 @@ def generate_cover_pdf(
     # Load and process the front cover image
     with WandImage(filename=front_cover_path) as img:
         img.transform_colorspace('srgb')
-        img.resize(cover_width, cover_height)
+        img.resize(width=cover_width, height=cover_height, filter='lanczos')
         front_cover = Image.open(img.make_blob('png'))
+    
+    # Ensure the front cover is exactly the right size
+    front_cover = front_cover.resize((cover_width, cover_height), Image.LANCZOS)
     
     # Create a new image for the full cover
     full_cover = Image.new("RGB", (total_width, total_height), color="white")
