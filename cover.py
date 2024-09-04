@@ -7,6 +7,9 @@ from PIL import Image, ImageDraw, ImageFont
 from wand.image import Image as WandImage
 from utils import create_pdf
 
+# Define the inch constant
+inch = 1
+
 
 def calculate_spine_width(page_count, is_hardcover=False):
     if is_hardcover:
@@ -156,7 +159,9 @@ def generate_cover_pdf(
         spine_center_x = wrap_margin + cover_width + spine_width // 2
         spine_top_y = wrap_margin + bleed_margin + INCH_TO_PX(1)
 
-        text_width, text_height = draw.textsize(book_title, font=font)
+        bbox = draw.textbbox((0, 0), book_title, font=font)
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]
         text_x = spine_center_x - text_height // 2
         text_y = spine_top_y + (cover_height - text_width) // 2
 

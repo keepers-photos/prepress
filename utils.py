@@ -58,8 +58,9 @@ def process_image(input_file, width, height):
 
 def create_pdf(image_files, output_path, dpi=300):
     try:
+        pdf_bytes = img2pdf.convert(image_files, dpi=dpi)
         with open(output_path, "wb") as f:
-            f.write(img2pdf.convert(image_files, dpi=dpi))
+            f.write(pdf_bytes)
         logging.info(f"PDF created successfully at {output_path}")
     except Exception as e:
         logging.error(f"Error occurred while creating PDF: {e}")
