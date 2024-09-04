@@ -4,6 +4,7 @@ import tempfile
 import os
 import img2pdf
 
+
 def print_progress(
     iteration,
     total,
@@ -19,8 +20,9 @@ def print_progress(
     bar = fill * filled_length + "-" * (length - filled_length)
     logging.info(f"\r{prefix} |{bar}| {percent}% {suffix}")
 
+
 def process_image(input_file, width, height):
-    with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
         temp_output = temp_file.name
 
     command = [
@@ -52,6 +54,7 @@ def process_image(input_file, width, height):
         logging.error(f"stderr: {e.stderr}")
         os.unlink(temp_output)
         return None
+
 
 def create_pdf(image_files, output_path, dpi=300):
     try:
