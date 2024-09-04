@@ -1,12 +1,14 @@
 # pyright: reportMissingModuleSource=false
 
 import os
+import tempfile
 from PIL import Image
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import logging
+from utils import process_image
 
 def calculate_spine_width(page_count, is_hardcover=False):
     if is_hardcover:
@@ -87,11 +89,12 @@ def generate_cover_pdf(
     total_width = (cover_width * 2) + spine_width + (wrap_margin * 2)
     total_height = cover_height + (wrap_margin * 2)
 
-    # Load and resize the front cover image
-    front_cover = Image.open(front_cover_path)
-    front_cover = front_cover.resize(
-        (int(cover_width), int(cover_height)), Image.LANCZOS
-    )
+    # Process and resize the front cover image
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
+        processed_cover_path = temp_file.name
+
+    process_image(front_cover_path, processed_cover_path, int(cover_width), int(cover_height))
+    front_cover = Image.open(processed_cover_path)
 
     # Log the size including wrap, bleed, and spine width
     logging.info(
@@ -108,6 +111,9 @@ def generate_cover_pdf(
 
     # Paste the front cover at the correct position
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
+
+    # Clean up the temporary file
+    os.unlink(processed_cover_path)
 
     # Load and paste the logo on the back cover
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
