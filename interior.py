@@ -7,7 +7,7 @@ from multiprocessing import Pool, cpu_count
 from utils import print_progress, process_image, create_pdf
 
 
-def generate_interior_pdf(input_path, output_path, book_size):
+def generate_interior_pdf(input_path, output_path, book_size, debug=False):
     input_path = os.path.abspath(input_path)
     output_path = os.path.abspath(output_path)
 
@@ -52,6 +52,9 @@ def generate_interior_pdf(input_path, output_path, book_size):
     logging.info("Combining images into PDF...")
     create_pdf(processed_files, output_path, dpi=300)
 
-    logging.info("Cleaning up temporary files...")
-    for file in processed_files:
-        os.remove(file)
+    if not debug:
+        logging.info("Cleaning up temporary files...")
+        for file in processed_files:
+            os.remove(file)
+    else:
+        logging.info("Debug mode: Keeping temporary files...")

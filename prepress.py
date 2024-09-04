@@ -72,7 +72,7 @@ if __name__ == "__main__":
         interior_output_path = os.path.join(
             args.output_path, f"{args.order_id}-interior.pdf"
         )
-        generate_interior_pdf(args.input_path, interior_output_path, args.book_size)
+        generate_interior_pdf(args.input_path, interior_output_path, args.book_size, args.debug)
         logging.info(f"Internal pages PDF generated: {interior_output_path}")
 
         # Check if the file was actually created in the output directory
