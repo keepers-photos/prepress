@@ -44,12 +44,13 @@ def process_image(input_file, width, height):
                     adobe_rgb_profile = ImageCms.getOpenProfile(ADOBE_RGB_PROFILE_PATH)
 
                     # Convert to sRGB
+                    # Note that the rendering intent and flags are set to ensure the best color conversion
                     img = ImageCms.profileToProfile(
                         img, 
                         inputProfile=adobe_rgb_profile, 
                         outputProfile=srgb_profile, 
                         outputMode="RGB",
-                        renderingIntent=ImageCms.Intent.RELATIVE_COLORIMETRIC,
+                        renderingIntent=ImageCms.Intent.PERCEPTUAL,
                         flags=ImageCms.Flags.BLACKPOINTCOMPENSATION
                     )
                     
