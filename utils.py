@@ -6,12 +6,6 @@ import img2pdf
 from PIL import Image, ImageCms
 import pikepdf
 
-# Add the path to the Adobe RGB ICC profile
-ADOBE_RGB_PROFILE_PATH = os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc")
-# Add the path to the sRGB ICC profile
-SRGB_PROFILE_PATH = os.path.join(os.path.dirname(__file__), "resources", "sRGB-IEC61966-2.1.icc")
-
-
 def print_progress(
     iteration,
     total,
@@ -34,27 +28,27 @@ def process_image(input_file, width, height):
 
     try:
         with Image.open(input_file) as img:
+            # Define the path to the CMYK ICC profile
+            cmyk_profile_path = os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc")
+            
             # Convert color space if needed (assuming input is Adobe RGB)
             if img.mode == "RGB":
                 try:
-                    # Create sRGB profile
-                    srgb_profile = ImageCms.getOpenProfile(SRGB_PROFILE_PATH)
+                    # Create CMYK profile
+                    cmyk_profile = ImageCms.getOpenProfile(cmyk_profile_path)
                     
                     # Use the provided Adobe RGB profile
-                    adobe_rgb_profile = ImageCms.getOpenProfile(ADOBE_RGB_PROFILE_PATH)
+                    adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
 
-                    # Convert to sRGB
-                    # Note that the rendering intent and flags are set to ensure the best color conversion
+                    # Convert to CMYK
                     img = ImageCms.profileToProfile(
                         img, 
                         inputProfile=adobe_rgb_profile, 
-                        outputProfile=srgb_profile, 
-                        outputMode="RGB",
-                        renderingIntent=ImageCms.Intent.PERCEPTUAL,
-                        flags=ImageCms.Flags.BLACKPOINTCOMPENSATION
+                        outputProfile=cmyk_profile, 
+                        outputMode="CMYK"
                     )
                     
-                    logging.debug(f"Color profile converted from Adobe RGB to sRGB for {input_file}")
+                    logging.debug(f"Color profile converted from Adobe RGB to CMYK for {input_file}")
                 except ImageCms.PyCMSError as e:
                     logging.warning(f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image.")
                 except Exception as e:
@@ -64,7 +58,7 @@ def process_image(input_file, width, height):
             img = img.resize((width, height), Image.LANCZOS)
 
             # Save the processed image
-            img.save(temp_output, "PNG", icc_profile=ImageCms.getOpenProfile(SRGB_PROFILE_PATH).tobytes(), resolution=300, quality=100)
+            img.save(temp_output, "PNG", icc_profile=ImageCms.getOpenProfile(cmyk_profile_path).tobytes(), resolution=300, quality=100)
 
         logging.debug(f"Successfully processed {input_file}")
         return temp_output
@@ -83,15 +77,16 @@ def create_pdf(image_files, output_path, dpi=300):
             temp_pdf.write(pdf_bytes)
             temp_pdf_path = temp_pdf.name
 
-        # Open the temporary PDF and embed the sRGB color profile
+        # Open the temporary PDF and embed the CMYK color profile
         with pikepdf.Pdf.open(temp_pdf_path) as pdf:
-            with open(SRGB_PROFILE_PATH, 'rb') as icc:
+            cmyk_profile_path = os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc")
+            with open(cmyk_profile_path, 'rb') as icc:
                 icc_profile = icc.read()
             
-            pdf.add_attachment('sRGB-IEC61966-2.1.icc', icc_profile)
+            pdf.add_attachment('GRACoL2006_Coated1v2.icc', icc_profile)
             
             for page in pdf.pages:
-                page.add_resource(pikepdf.Name.ColorSpace, pikepdf.Name.DefaultRGB, 
+                page.add_resource(pikepdf.Name.ColorSpace, pikepdf.Name.DefaultCMYK, 
                                   pikepdf.Array([pikepdf.Name.ICCBased, pdf.make_indirect(pikepdf.Stream(pdf, icc_profile))]))
 
             pdf.save(output_path)
@@ -99,6 +94,6 @@ def create_pdf(image_files, output_path, dpi=300):
         # Remove the temporary PDF file
         os.unlink(temp_pdf_path)
 
-        logging.info(f"PDF created successfully with embedded sRGB profile at {output_path}")
+        logging.info(f"PDF created successfully with embedded CMYK profile at {output_path}")
     except Exception as e:
         logging.error(f"Error occurred while creating PDF: {e}")
