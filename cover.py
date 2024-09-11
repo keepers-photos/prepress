@@ -161,7 +161,7 @@ def generate_cover_pdf(
     front_cover_x = wrap_margin + cover_width + spine_width
     front_cover_y = wrap_margin
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
-    if debug_mode:
+    if verbose_mode:
         full_cover.save(f"{output_path}_debug_1_front_cover.png")
 
     # Add logo to the back cover
@@ -172,7 +172,7 @@ def generate_cover_pdf(
         logo_x = wrap_margin + (cover_width - logo_size) // 2
         logo_y = total_height - wrap_margin - bleed_margin - logo_size - INCH_TO_PX(1)
         full_cover.paste(logo, (logo_x, logo_y))
-    if debug_mode:
+    if verbose_mode:
         full_cover.save(f"{output_path}_debug_2_with_logo.png")
 
     # Add spine text if page count is over 80
@@ -194,7 +194,7 @@ def generate_cover_pdf(
         draw.text(
             (text_x, text_y), book_title, font=font, fill=(89, 89, 89), anchor="mm"
         )
-        if debug_mode:
+        if verbose_mode:
             full_cover.save(f"{output_path}_debug_3_with_spine_text.png")
 
     # Save as temporary PNG file
