@@ -28,18 +28,20 @@ def process_image(input_file, width, height):
     try:
         with Image.open(input_file) as img:
             # Convert color space if needed (assuming input is Adobe RGB)
-            if img.mode == 'RGB' and img.info.get('icc_profile'):
-                icc = img.info.get('icc_profile')
-                if b'Adobe RGB' in icc:
-                    srgb_profile = ImageCms.createProfile('sRGB')
-                    img = ImageCms.profileToProfile(img, icc, srgb_profile, outputMode='RGB')
-            
+            if img.mode == "RGB" and img.info.get("icc_profile"):
+                icc = img.info.get("icc_profile")
+                if b"Adobe RGB" in icc:
+                    srgb_profile = ImageCms.createProfile("sRGB")
+                    img = ImageCms.profileToProfile(
+                        img, icc, srgb_profile, outputMode="RGB"
+                    )
+
             # Resize the image
             img = img.resize((width, height), Image.LANCZOS)
-            
+
             # Save the processed image
             img.save(temp_output, "PNG", resolution=300, quality=100)
-        
+
         logging.debug(f"Successfully processed {input_file}")
         return temp_output
     except Exception as e:
