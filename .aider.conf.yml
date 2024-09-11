@@ -1,9 +1,7 @@
 model: claude-3-5-sonnet-20240620
 read: [README.md, requirements.txt]
 cache-prompts: true
-cache-keepalive-pings: 2
 stream: false
 auto-commits: true
-test-command: "black prepress.py && pyright prepress.py"
 auto-lint: true
-auto-test: true
+lint: black .

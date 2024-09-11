@@ -257,3 +257,438 @@
 
 # 2024-09-04 13:11:11.560496
 +can you set the DPI of the cover canvas to 300? I'm getting this error: Images: Your file contains images with resolution less than 200 pixels per inch. Lulu suggests using images with a pixel per inch range of 200-600 for the best results.
+
+# 2024-09-05 10:08:02.163965
++aider
+
+# 2024-09-05 10:21:58.639850
++/add cover.py
+
+# 2024-09-05 10:22:22.837340
++{
+
+# 2024-09-05 10:23:11.903227
++I'd like to change how the PDF is created. 
+
+# 2024-09-05 10:26:22.961266
++Right now, it creates multiple images: the `front_cover` for the image, the `logo` and the `full_cover` to paste in. 
+
+# 2024-09-05 10:27:01.434965
++And finally the canvas which we draw the spine text onto. This works ok but the DPI management is a nightmare. 
+
+# 2024-09-05 10:27:27.592845
++Further, it's quite hard to save intermediate steps as images so we can visually inspect the output at a given step.
+
+# 2024-09-05 10:29:00.740412
++also, there are a lot more documents about PIL/Pillow then ReportLab so I want to write as much code in PIL as possible.
+
+# 2024-09-05 10:29:15.243718
++So, with the above as the background, make the following changes:
+
+# 2024-09-05 10:30:11.070350
++1. rewrite the `generate_cover_pdf` function that operates on the image file. First step, extent it to west, then add `wrap_margin` if needed, add logo and spine text. 
+
+# 2024-09-05 10:30:17.725580
++2. keep everything with 300DPI.
+
+# 2024-09-05 10:30:44.766705
++3. keep everything in sRGB colour profile. the original file is AdobeRGB. Use `convert` to handle that.
+
+# 2024-09-05 10:30:59.537642
++4. convert the image to PDF.
+
+# 2024-09-05 10:31:48.185284
++5. for each step described in #1, save the file as a local image with a unique name so I can inspect them.
+
+# 2024-09-05 10:32:12.689294
++6. pass in a new argument into the function call "debug_mode". only do #5 if debug_mode is true.
+
+# 2024-09-05 10:32:41.333642
++7. update "prepress.py" to take an optional argument is debug_mode. By default, it's false.
+
+# 2024-09-05 10:33:07.328194
++8. add a docstring to the function that summarises this decision from reportlab to PIL and the steps.
+
+# 2024-09-05 10:33:08.184584
++}
+
+# 2024-09-05 10:57:17.521761
++/lint
+
+# 2024-09-05 10:57:19.399747
++gs
+
+# 2024-09-05 10:59:10.584979
++/add cover.py
+
+# 2024-09-05 11:00:29.145481
++looks to me that if the png file is not big enough, it will be pasted with white border around it. please resize it to the cover_with and cover_height first.
+
+# 2024-09-05 11:02:53.510962
++/add interior.py
+
+# 2024-09-05 11:03:32.051537
++will you check the interior.py to make sure the the `combine_command` also ensures the DPI?
+
+# 2024-09-05 11:11:26.478465
++{
+
+# 2024-09-05 11:11:49.234972
++/add cover.py
+
+# 2024-09-05 11:11:51.725930
++/add interior.py
+
+# 2024-09-05 11:11:54.337793
++/add utils.py
+
+# 2024-09-05 11:11:57.593857
++/add *.py
+
+# 2024-09-05 11:12:05.873227
++/add requirements.txt
+
+# 2024-09-05 11:12:10.737989
++{
+
+# 2024-09-05 11:12:42.321171
++do not use ReportLabe. Replace it with img2pdf. Please update references. 
+
+# 2024-09-05 11:13:47.610521
++note that img2pdf has a `ImgSize = Enum("ImgSize", "abs perc dpi")` . Here is the doc:
+
+# 2024-09-05 11:13:49.753463
++sizeargs.add_argument(
++        "-s",
++        "--imgsize",
++        metavar="LxL",
++        type=parse_imgsize_rectarg,
++        help="""
++Sets the size of the images on the PDF pages.  In addition, the unit dpi is
++allowed which will set the image size as a value of dots per inch.  Instead of
++a unit, width and height values may also have a percentage sign appended,
++indicating a resize of the image by that percentage. The short-option is the
++lower case s because it is an mnemonic for being smaller than the page size.
++""",
++    )
+
+# 2024-09-05 11:14:20.529112
++So `img2pdf -s 300dpi --output out.pdf *.png` should give us the right DPI.
+
+# 2024-09-05 11:15:19.623888
++update utils.py, cover.py and interior.py so all operations are handled on an temporary image. 
+
+# 2024-09-05 11:15:38.520266
++then the last step use command line `img2pdf` to convert them to the right pdf.
+
+# 2024-09-05 11:15:39.270254
++}
+
+# 2024-09-05 11:16:53.953156
++/run pip install -r requirements.txt
+
+# 2024-09-05 11:18:41.783309
++update interior.py so that the temporary files aren't removed if is debug is true
+
+# 2024-09-05 11:22:19.201196
++!black
+
+# 2024-09-05 11:22:28.507764
++!black cover.py
+
+# 2024-09-05 11:23:13.799769
++{
+
+# 2024-09-05 11:23:15.918624
++Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
++Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
++Removing: /Users/alexdong/Library/Caches/Homebrew/awscli--2.17.22... (20.3MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/certifi--2024.7.4... (5.1KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/cffi--1.16.0_1... (334.9KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/cryptography--43.0.0... (2.5MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/fd--10.1.0... (1.2MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/ghostscript_bottle_manifest--10.03.1... (18.1KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/ghostscript--10.03.1... (50.5MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/gnutls_bottle_manifest--3.8.4... (17.9KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/gnutls--3.8.4... (3.0MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/go--1.22.5... (99.1MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/gpgme_bottle_manifest--1.23.2_1... (29.9KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/gpgme--1.23.2_1... (1.2MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libassuan_bottle_manifest--2.5.7... (9.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libassuan--2.5.7... (160.7KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libheif--1.18.1... (1.7MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libnghttp2_bottle_manifest--1.61.0... (7.4KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libnghttp2--1.61.0... (224.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libpng_bottle_manifest--1.6.43... (7.9KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libpng--1.6.43... (448.7KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libunistring_bottle_manifest--1.2... (7.3KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libunistring--1.2... (1.6MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libx11_bottle_manifest--1.8.9... (15KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libx11--1.8.9... (2.1MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libxcb_bottle_manifest--1.17.0... (15.8KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libxcb--1.17.0... (977.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libxdmcp_bottle_manifest--1.1.5... (8.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/libxdmcp--1.1.5... (35.7KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/llvm@16_bottle_manifest--16.0.6_1... (18.7KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/llvm@16--16.0.6_1... (334.6MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/luajit--2.1.1720049189... (875.8KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/mdtohtml--0.6.1.tar.gz... (1.5MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/msgpack--6.0.2... (45.6KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/node@16_bottle_manifest--16.20.2_1... (17.5KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/nss--3.102... (5.8MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/openjpeg_bottle_manifest--2.5.2... (13.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/openjpeg--2.5.2... (2MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/openssl@3--3.3.1... (9.5MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/p11-kit_bottle_manifest--0.25.5... (10KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/p11-kit--0.25.5... (874.5KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/parallel--20240722... (2.3MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/pinentry--1.3.1... (129KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/pipx--1.6.0... (266.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/poppler_bottle_manifest--24.04.0... (52.6KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/poppler--24.04.0... (8.9MB)
++Removing: /opt/homebrew/Cellar/python@3.11/3.11.9... (3,328 files, 62.4MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/python@3.11_bottle_manifest--3.11.9... (24KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/python@3.12--3.12.4... (15.8MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/sqlite--3.46.0... (2.2MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/supabase--1.187.10.tar.gz... (11.2MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/swiftlint--0.55.1... (8.1MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/tree-sitter--0.22.6... (5.0MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/unbound--1.20.0... (2.8MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/wget_bottle_manifest--1.24.5... (12.2KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/wget--1.24.5... (1.5MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/xorgproto_bottle_manifest--2024.1... (14.1KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/xorgproto--2024.1... (699.7KB)
++Removing: /opt/homebrew/Cellar/xz/5.4.6... (163 files, 2.6MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/xz_bottle_manifest--5.4.6... (7.5KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/z3_bottle_manifest--4.13.0... (7.4KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/z3--4.13.0... (12.2MB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/zstd_bottle_manifest--1.5.6... (9.1KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/zstd--1.5.6... (758.6KB)
++Removing: /Users/alexdong/Library/Caches/Homebrew/docutils--0.21.2... (513.2KB)
++Removing: /Users/alexdong/Library/Logs/Homebrew/libheif... (504B)
++Removing: /Users/alexdong/Library/Logs/Homebrew/sentry-wizard... (2 files, 98.6KB)
++Removing: /Users/alexdong/Library/Logs/Homebrew/glib... (64B)
++Removing: /Users/alexdong/Library/Logs/Homebrew/node@18... (64B)
++Removing: /Users/alexdong/Library/Logs/Homebrew/supabase... (117B)
++Removing: /Users/alexdong/Library/Logs/Homebrew/ca-certificates... (64B)
++Removing: /Users/alexdong/Library/Logs/Homebrew/node... (64B)
++Removing: /Users/alexdong/Library/Logs/Homebrew/python@3.11... (2 files, 2.5KB)
++alexdong@M2Mini keepers-prepress % pl
++All done! ✨ 🍰 ✨
++5 files left unchanged.
++WARNING: there is a new pyright version available (v1.1.378 -> v1.1.379).
++Please install the new version or set PYRIGHT_PYTHON_FORCE_VERSION to `latest`
++
++0 errors, 0 warnings, 0 informations
++alexdong@M2Mini keepers-prepress % pip install pyright --latest
++
++Usage:
++  pip install [options] <requirement specifier> [package-index-options] ...
++  pip install [options] -r <requirements file> [package-index-options] ...
++  pip install [options] [-e] <vcs project url> ...
++  pip install [options] [-e] <local project path> ...
++  pip install [options] <archive url/path> ...
++
++no such option: --latest
++alexdong@M2Mini keepers-prepress % pip install -r requirements.txt
++Requirement already satisfied: Pillow==10.4.0 in ./venv/lib/python3.9/site-packages (from -r requirements.txt (line 1)) (10.4.0)
++Collecting pyright==1.1.379 (from -r requirements.txt (line 2))
++  Downloading pyright-1.1.379-py3-none-any.whl.metadata (6.2 kB)
++Requirement already satisfied: reportlab==4.2.2 in ./venv/lib/python3.9/site-packages (from -r requirements.txt (line 3)) (4.2.2)
++Requirement already satisfied: Wand==0.6.13 in ./venv/lib/python3.9/site-packages (from -r requirements.txt (line 4)) (0.6.13)
++ERROR: Cannot install pyright==1.1.378 and pyright==1.1.379 because these package versions have conflicting dependencies.
++
++The conflict is caused by:
++    The user requested pyright==1.1.379
++    The user requested pyright==1.1.378
++
++To fix this you could try to:
++1. loosen the range of package versions you've specified
++2. remove package versions to allow pip to attempt to solve the dependency conflict
++
++ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
++alexdong@M2Mini keepers-prepress % pip install -r requirements.txt
++Requirement already satisfied: Pillow==10.4.0 in ./venv/lib/python3.9/site-packages (from -r requirements.txt (line 1)) (10.4.0)
++Collecting pyright==1.1.379 (from -r requirements.txt (line 2))
++  Using cached pyright-1.1.379-py3-none-any.whl.metadata (6.2 kB)
++Requirement already satisfied: reportlab==4.2.2 in ./venv/lib/python3.9/site-packages (from -r requirements.txt (line 3)) (4.2.2)
++Requirement already satisfied: Wand==0.6.13 in ./venv/lib/python3.9/site-packages (from -r requirements.txt (line 4)) (0.6.13)
++Requirement already satisfied: nodeenv>=1.6.0 in ./venv/lib/python3.9/site-packages (from pyright==1.1.379->-r requirements.txt (line 2)) (1.9.1)
++Requirement already satisfied: chardet in ./venv/lib/python3.9/site-packages (from reportlab==4.2.2->-r requirements.txt (line 3)) (5.2.0)
++Downloading pyright-1.1.379-py3-none-any.whl (18 kB)
++Installing collected packages: pyright
++  Attempting uninstall: pyright
++    Found existing installation: pyright 1.1.378
++    Uninstalling pyright-1.1.378:
++      Successfully uninstalled pyright-1.1.378
++Successfully installed pyright-1.1.379
++alexdong@M2Mini keepers-prepress % pl
++All done! ✨ 🍰 ✨
++5 files left unchanged.
++
++added 1 package, and audited 2 packages in 2s
++
++found 0 vulnerabilities
++0 errors, 0 warnings, 0 informations
++alexdong@M2Mini keepers-prepress % pl
++error: cannot format /Users/alexdong/Projects/keepers-prepress/cover.py: Cannot parse: 13:0: def generate_cover_pdf(
++reformatted /Users/alexdong/Projects/keepers-prepress/utils.py
++reformatted /Users/alexdong/Projects/keepers-prepress/prepress.py
++
++Oh no! 💥 💔 💥
++2 files reformatted, 1 file left unchanged, 1 file failed to reformat.
++alexdong@M2Mini keepers-prepress % pl
++reformatted /Users/alexdong/Projects/keepers-prepress/cover.py
++
++All done! ✨ 🍰 ✨
++1 file reformatted, 3 files left unchanged.
++/Users/alexdong/Projects/keepers-prepress/cover.py
++  /Users/alexdong/Projects/keepers-prepress/cover.py:15:27 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:17:27 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:19:26 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:21:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:23:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:25:27 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:27:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:29:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:31:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:33:26 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:35:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:37:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:39:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:41:27 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:43:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:45:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:47:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:49:26 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:51:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:53:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:55:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:57:27 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:59:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:61:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:63:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:65:26 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:67:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:69:28 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:72:44 - error: "inch" is not defined (reportUndefinedVariable)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:119:34 - error: Argument of type "Unknown | bytes | None" cannot be assigned to parameter "fp" of type "StrOrBytesPath | IO[bytes]" in function "open" (reportArgumentType)
++  /Users/alexdong/Projects/keepers-prepress/cover.py:159:40 - error: Cannot access attribute "textsize" for class "ImageDraw"
++    Attribute "textsize" is unknown (reportAttributeAccessIssue)
++/Users/alexdong/Projects/keepers-prepress/utils.py
++  /Users/alexdong/Projects/keepers-prepress/utils.py:62:21 - error: Argument of type "bytes | None" cannot be assigned to parameter "buffer" of type "ReadableBuffer" in function "write"
+
+# 2024-09-05 11:23:17.042073
++}
+
+# 2024-09-05 11:24:20.814121
++!pl
+
+# 2024-09-05 11:24:57.502423
++!black *
+
+# 2024-09-12 07:08:30.552337
++/ask why `ImageDraw.Draw(full_cover)? what does it do?
+
+# 2024-09-12 07:16:46.411014
++/ask can we use only Pillow without imagemagick? i.e. why do we need WandImage?
+
+# 2024-09-12 07:18:25.949695
++do ti
+
+# 2024-09-12 07:19:45.812483
++/run sed -i '' '/Wand/d' requirements.txt
+
+# 2024-09-12 07:22:19.487672
++rename `debug` to `verbose` and make it -v
+
+# 2024-09-12 07:44:06.668206
++Traceback (most recent call last):
++  File "/Users/alexdong/Projects/keepers-prepress/.venv/lib/python3.9/site-packages/PIL/ImageCms.py", line 480, in profileToProfile
++    inputProfile = ImageCmsProfile(inputProfile)
++  File "/Users/alexdong/Projects/keepers-prepress/.venv/lib/python3.9/site-packages/PIL/ImageCms.py", line 264, in __init__
++    raise TypeError(msg)
++TypeError: Invalid type for Profile
++
++The above exception was the direct cause of the following exception:
++
++Traceback (most recent call last):
++  File "/Users/alexdong/Projects/keepers-prepress/prepress.py", line 102, in <module>
++    generate_cover_pdf(
++  File "/Users/alexdong/Projects/keepers-prepress/cover.py", line 124, in generate_cover_pdf
++    img = ImageCms.profileToProfile(
++  File "/Users/alexdong/Projects/keepers-prepress/.venv/lib/python3.9/site-packages/PIL/ImageCms.py", line 497, in profileToProfile
++    raise PyCMSError(v) from v
++PIL.ImageCms.PyCMSError: Invalid type for Profile
+
+# 2024-09-12 07:46:14.880828
++/undo
+
+# 2024-09-12 07:46:51.835255
++/ask I can see the png files do have "Adobe RGB 1998". can you suggest way to do the conversion to sRGB?
+
+# 2024-09-12 07:47:53.331846
++/ask would it be helpful if I provide adobeRGB icc files?
+
+# 2024-09-12 07:49:29.992452
++ok. the image is there now. make the coded changes again.
+
+# 2024-09-12 07:50:09.718723
++2024-09-12 07:49:57,622 - WARNING - Failed to convert color profile: module 'PIL.ImageCms' has no attribute 'INTENT_RELATIVE_COLORIMETRIC'. Proceeding with original image.
++Traceback (most recent call last):
++  File "/Users/alexdong/Projects/keepers-prepress/prepress.py", line 102, in <module>
++    generate_cover_pdf(
++  File "/Users/alexdong/Projects/keepers-prepress/cover.py", line 164, in generate_cover_pdf
++    if debug_mode:
++NameError: name 'debug_mode' is not define
+
+# 2024-09-12 07:53:59.991208
++/web https://pillow.readthedocs.io/en/stable/reference/ImageCms.html
+
+# 2024-09-12 07:57:38.847816
++/run python prepress.py \
+
+# 2024-09-12 07:57:39.030733
++/run "LOUIE JACK SKERLJ DANIELSON 27 September 2003" \
+
+# 2024-09-12 07:57:39.150279
++/run ./.data \
+
+# 2024-09-12 07:57:39.265116
++/run ./ \
+
+# 2024-09-12 07:57:39.382876
++/run 28912-0 \
+
+# 2024-09-12 07:57:39.501283
++/run --process cover \
+
+# 2024-09-12 07:57:39.617400
++/run --cover_type soft_cover \
+
+# 2024-09-12 07:57:39.733366
++/run --book_size square \
+
+# 2024-09-12 07:57:39.848790
++/run --verbose
+
+# 2024-09-12 08:01:49.867790
++/ask the PDF has an color space of "DeviceRGB", it should be "sRGB-IEC61966-2.1.icc" which is located in `resources`. There are two issues. one is it's not converted properly. 
+
+# 2024-09-12 08:05:42.143849
++do it
+
+# 2024-09-12 08:08:03.496280
++/run pip install -r requirements.txt
+
+# 2024-09-12 08:13:23.651222
++instead of go to sRGB, let's go directly to CMYK. The icc profile is located in `resources/GRACoL2006_Coated1v2.icc`. also, do not change the renderingIntent or flags! Move the icc path into the `process_image` method.
+
+# 2024-09-12 08:19:03.551711
++instead of go to sRGB, let's go directly to CMYK using `profileToProfile`. The icc profile is located in `resources/GRACoL2006_Coated1v2.icc`. also, do not change the renderingIntent or flags! Move the icc path into the `process_image` method.
+
+# 2024-09-12 08:20:29.358200
++make sure the img changes are 300 DPI. When I open up `_debug_0_front_cover.png`, it's 72 DPI.
+
+# 2024-09-12 08:21:27.997628
++/ask do not offer to /add anything in resources

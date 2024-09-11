@@ -140,10 +140,8 @@ python prepress.py \
 
 ## Python Code Conventions
 
-- Use Python 3.8
+- Use Python 3.9
+- Prefer system libraries over third-party libraries. Prefer fewer dependencies. Prefer popular libraries over less popular ones. For example, use `Pillow` over `wand` or `PyPDF2`.
 - For import, put system libraries first, then third-party libraries, then local
   libraries. With one-line between each group. Use `isort` for sorting.
-- use `logging` for logging instead of `print`. use levels properly.
-- Use `logging.debug` to replace inline comments.
-- Use `logging.info` to replace block comments that describe the main purpose
-  of a function or a section of code.
+- use `logging` for logging instead of `print`. use levels properly. Use `logging.debug` to replace inline comments and `logging.info` to replace block comments that describe the main purpose of a function or a section of code.

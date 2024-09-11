@@ -6,6 +6,9 @@ import img2pdf
 from PIL import Image, ImageCms
 import pikepdf
 
+cmyk_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc"))
+adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
+
 def print_progress(
     iteration,
     total,
@@ -29,39 +32,16 @@ def process_image(input_file, width, height):
     try:
         with Image.open(input_file) as img:
             # Define the path to the CMYK ICC profile
-            cmyk_profile_path = os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc")
-            
-            # Convert color space if needed (assuming input is Adobe RGB)
-            if img.mode == "RGB":
-                try:
-                    # Create CMYK profile
-                    cmyk_profile = ImageCms.getOpenProfile(cmyk_profile_path)
-                    
-                    # Use the provided Adobe RGB profile
-                    adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
+            assert img.mode == "RGB"
 
-                    # Convert directly to CMYK
-                    img = ImageCms.profileToProfile(
-                        img, 
-                        inputProfile=adobe_rgb_profile, 
-                        outputProfile=cmyk_profile, 
-                        outputMode="CMYK"
-                    )
-                    
-                    logging.debug(f"Color profile converted from Adobe RGB to CMYK for {input_file}")
-                except ImageCms.PyCMSError as e:
-                    logging.warning(f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image.")
-                except Exception as e:
-                    logging.error(f"Unexpected error during color profile conversion for {input_file}: {e}. Proceeding with original image.")
-
-            # Resize the image
-            img = img.resize((width, height), Image.LANCZOS)
-
-            # Save the processed image
+            # Convert directly to CMYK
+            img = ImageCms.profileToProfile(img, inputProfile=adobe_rgb_profile, outputProfile=cmyk_profile, outputMode="CMYK")
             img.save(temp_output, "PNG", icc_profile=ImageCms.getOpenProfile(cmyk_profile_path).tobytes(), resolution=300, quality=100)
-
-        logging.debug(f"Successfully processed {input_file}")
-        return temp_output
+        return im
+    except ImageCms.PyCMSError as e:
+        logging.warning(f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image.")
+    except Exception as e:
+        logging.error(f"Unexpected error during color profile conversion for {input_file}: {e}. Proceeding with original image.")
     except Exception as e:
         logging.error(f"Error processing {input_file}: {str(e)}")
         os.unlink(temp_output)
@@ -84,7 +64,6 @@ def create_pdf(image_files, output_path, dpi=300):
                 icc_profile = icc.read()
             
             pdf.add_attachment('GRACoL2006_Coated1v2.icc', icc_profile)
-            
             for page in pdf.pages:
                 page.add_resource(pikepdf.Name.ColorSpace, pikepdf.Name.DefaultCMYK, 
                                   pikepdf.Array([pikepdf.Name.ICCBased, pdf.make_indirect(pikepdf.Stream(pdf, icc_profile))]))

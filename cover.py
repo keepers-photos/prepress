@@ -5,7 +5,7 @@ import logging
 import tempfile
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageCms
-from utils import create_pdf
+from utils import create_pdf, process_image
 
 # Add the path to the Adobe RGB ICC profile
 ADOBE_RGB_PROFILE_PATH = os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc")
@@ -117,44 +117,9 @@ def generate_cover_pdf(
 
     total_width = (cover_width * 2) + spine_width + (wrap_margin * 2)
     total_height = cover_height + (wrap_margin * 2)
-
-    # Load and process the front cover image
-    with Image.open(front_cover_path) as img:
-        # Convert color space if needed (assuming input is Adobe RGB)
-        if img.mode == "RGB":
-            try:
-                # Create sRGB profile
-                srgb_profile = ImageCms.createProfile("sRGB")
-                
-                # Use the provided Adobe RGB profile
-                adobe_rgb_profile = ImageCms.getOpenProfile(ADOBE_RGB_PROFILE_PATH)
-
-                # Convert to sRGB
-                img = ImageCms.profileToProfile(
-                    img, 
-                    inputProfile=adobe_rgb_profile, 
-                    outputProfile=srgb_profile, 
-                    outputMode="RGB"
-                )
-                
-                if verbose_mode:
-                    logging.info("Color profile converted from Adobe RGB to sRGB")
-            except Exception as e:
-                logging.warning(f"Failed to convert color profile: {e}. Proceeding with original image.")
-
-        # Resize the image
-        img = img.resize((cover_width, cover_height), Image.LANCZOS)
-
-        # Create a new image with white background
-        front_cover = Image.new("RGB", (cover_width, cover_height), "white")
-        # Paste the resized image onto the white background
-        front_cover.paste(img, (0, 0), img if img.mode == "RGBA" else None)
-
+    front_cover = process_image(front_cover_path, cover_width, cover_height)
     if verbose_mode:
-        front_cover.save(f"{output_path}_debug_0_front_cover.png", dpi=(300, 300))
-
-    # Create a new image for the full cover
-    full_cover = Image.new("RGB", (total_width, total_height), color="white")
+        front_cover.save(f"{output_path}_debug_0_front_cover_processed.png", dpi=(300, 300))
 
     # Paste the front cover
     front_cover_x = wrap_margin + cover_width + spine_width

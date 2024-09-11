@@ -1,13 +1,13 @@
 """
-venv/bin/python prepress.py  \
+.venv/bin/python prepress.py  \
     "LOUIE JACK SKERLJ DANIELSON 27 September 2003" \
-    ./data \
+    ./.data \
     ./ \
     28912-0 \
     --process cover \
     --cover_type soft_cover \
     --book_size square \
-    --debug
+    --verbose
 """
 
 # pyright: reportMissingModuleSource=false
@@ -50,7 +50,8 @@ if __name__ == "__main__":
         help="Specify the book size: square (8.75x8.75 inches) or small_square (7x7 inches)",
     )
     parser.add_argument(
-        "-v", "--verbose",
+        "-v",
+        "--verbose",
         action="store_true",
         help="Enable verbose mode to save intermediate images",
     )
