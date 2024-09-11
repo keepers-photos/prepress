@@ -46,12 +46,15 @@ def process_image(input_file, width, height):
                         inputProfile=adobe_rgb_profile, 
                         outputProfile=srgb_profile, 
                         outputMode="RGB",
-                        renderingIntent=ImageCms.Intent.PERCEPTUAL
+                        renderingIntent=ImageCms.Intent.RELATIVE_COLORIMETRIC,
+                        flags=ImageCms.Flags.BLACKPOINTCOMPENSATION
                     )
                     
                     logging.debug(f"Color profile converted from Adobe RGB to sRGB for {input_file}")
-                except Exception as e:
+                except ImageCms.PyCMSError as e:
                     logging.warning(f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image.")
+                except Exception as e:
+                    logging.error(f"Unexpected error during color profile conversion for {input_file}: {e}. Proceeding with original image.")
 
             # Resize the image
             img = img.resize((width, height), Image.LANCZOS)
