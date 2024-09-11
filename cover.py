@@ -134,8 +134,7 @@ def generate_cover_pdf(
                     img, 
                     inputProfile=adobe_rgb_profile, 
                     outputProfile=srgb_profile, 
-                    outputMode="RGB",
-                    renderingIntent=ImageCms.INTENT_RELATIVE_COLORIMETRIC
+                    outputMode="RGB"
                 )
                 
                 if verbose_mode:
