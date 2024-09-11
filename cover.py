@@ -117,19 +117,21 @@ def generate_cover_pdf(
     # Load and process the front cover image
     with Image.open(front_cover_path) as img:
         # Convert color space if needed (assuming input is Adobe RGB)
-        if img.mode == 'RGB' and img.info.get('icc_profile'):
-            icc = img.info.get('icc_profile')
-            if b'Adobe RGB' in icc:
-                srgb_profile = ImageCms.createProfile('sRGB')
-                img = ImageCms.profileToProfile(img, icc, srgb_profile, outputMode='RGB')
-        
+        if img.mode == "RGB" and img.info.get("icc_profile"):
+            icc = img.info.get("icc_profile")
+            if b"Adobe RGB" in icc:
+                srgb_profile = ImageCms.createProfile("sRGB")
+                img = ImageCms.profileToProfile(
+                    img, icc, srgb_profile, outputMode="RGB"
+                )
+
         # Resize the image
         img = img.resize((cover_width, cover_height), Image.LANCZOS)
-        
+
         # Create a new image with white background
-        front_cover = Image.new('RGB', (cover_width, cover_height), 'white')
+        front_cover = Image.new("RGB", (cover_width, cover_height), "white")
         # Paste the resized image onto the white background
-        front_cover.paste(img, (0, 0), img if img.mode == 'RGBA' else None)
+        front_cover.paste(img, (0, 0), img if img.mode == "RGBA" else None)
 
     if verbose_mode:
         front_cover.save(f"{output_path}_debug_0_front_cover.png")
