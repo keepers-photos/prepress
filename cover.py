@@ -120,11 +120,12 @@ def generate_cover_pdf(
         img.transform_colorspace("srgb")
         img.resize(width=cover_width, height=cover_height, filter="lanczos")
         front_cover = Image.open(img.make_blob("png"))
-
     # Ensure the front cover is exactly the right size
     front_cover = front_cover.resize(
         (cover_width, cover_height), Image.Resampling.LANCZOS
     )
+    if debug_mode:
+        front_cover.save(f"{output_path}_debug_0_front_cover.png")
 
     # Create a new image for the full cover
     full_cover = Image.new("RGB", (total_width, total_height), color="white")
@@ -133,7 +134,6 @@ def generate_cover_pdf(
     front_cover_x = wrap_margin + cover_width + spine_width
     front_cover_y = wrap_margin
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
-
     if debug_mode:
         full_cover.save(f"{output_path}_debug_1_front_cover.png")
 
@@ -145,7 +145,6 @@ def generate_cover_pdf(
         logo_x = wrap_margin + (cover_width - logo_size) // 2
         logo_y = total_height - wrap_margin - bleed_margin - logo_size - INCH_TO_PX(1)
         full_cover.paste(logo, (logo_x, logo_y))
-
     if debug_mode:
         full_cover.save(f"{output_path}_debug_2_with_logo.png")
 
@@ -168,9 +167,8 @@ def generate_cover_pdf(
         draw.text(
             (text_x, text_y), book_title, font=font, fill=(89, 89, 89), anchor="mm"
         )
-
-    if debug_mode:
-        full_cover.save(f"{output_path}_debug_3_with_spine_text.png")
+        if debug_mode:
+            full_cover.save(f"{output_path}_debug_3_with_spine_text.png")
 
     # Save as temporary PNG file
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
@@ -181,10 +179,6 @@ def generate_cover_pdf(
     create_pdf([temp_file_path], output_path, dpi=DPI)
 
     # Remove temporary file
-    os.unlink(temp_file_path)
-
+    if not debug_mode:
+        os.unlink(temp_file_path)
     logging.info(f"Cover PDF generated: {output_path}")
-    if debug_mode:
-        logging.info(
-            "Debug images saved with prefixes: _debug_1_, _debug_2_, _debug_3_"
-        )
