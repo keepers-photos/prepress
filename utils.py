@@ -29,44 +29,36 @@ def print_progress(
 
 
 def process_image(input_file, width, height):
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
-        temp_output = temp_file.name
-
     try:
         with Image.open(input_file) as img:
-            # Define the path to the CMYK ICC profile
-            assert img.mode == "RGB"
-
-            # Convert directly to CMYK
-            img = ImageCms.profileToProfile(
-                img,
-                inputProfile=adobe_rgb_profile,
-                outputProfile=cmyk_profile,
-                outputMode="CMYK",
-            )
-            img.save(
-                temp_output,
-                "PNG",
-                icc_profile=ImageCms.getOpenProfile(cmyk_profile_path).tobytes(),
-                resolution=300,
-                quality=100,
-            )
-        return im
-    except ImageCms.PyCMSError as e:
-        logging.error(
-            f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image."
-        )
-    except Exception as e:
-        logging.error(
-            f"Unexpected error during color profile conversion for {input_file}: {e}. Proceeding with original image."
-        )
+            # Resize the image
+            img = img.resize((width, height), Image.LANCZOS)
+            
+            # Convert from AdobeRGB to CMYK
+            if img.mode == "RGB":
+                img = ImageCms.profileToProfile(
+                    img,
+                    inputProfile=adobe_rgb_profile,
+                    outputProfile=cmyk_profile,
+                    outputMode="CMYK",
+                )
+            
+            # Save as temporary JPEG file
+            with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
+                img.save(
+                    temp_file.name,
+                    "JPEG",
+                    quality=100,
+                    subsampling=0,  # This ensures no chroma subsampling
+                    icc_profile=cmyk_profile.tobytes(),
+                )
+                return temp_file.name
     except Exception as e:
         logging.error(f"Error processing {input_file}: {str(e)}")
-        os.unlink(temp_output)
         return None
 
 
-def png_to_pdf(image_files, output_path, dpi=300):
+def images_to_pdf(image_files, output_path, dpi=300):
     try:
         pdf_bytes = img2pdf.convert(image_files, dpi=dpi)
 
