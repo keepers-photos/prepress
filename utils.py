@@ -40,7 +40,7 @@ def process_image(input_file, width, height):
                     # Use the provided Adobe RGB profile
                     adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
 
-                    # Convert to CMYK
+                    # Convert directly to CMYK
                     img = ImageCms.profileToProfile(
                         img, 
                         inputProfile=adobe_rgb_profile, 
