@@ -3,8 +3,7 @@
 import os
 import logging
 import tempfile
-from PIL import Image, ImageDraw, ImageFont
-from wand.image import Image as WandImage
+from PIL import Image, ImageDraw, ImageFont, ImageCms
 from utils import create_pdf
 
 # Define the inch constant
@@ -116,14 +115,22 @@ def generate_cover_pdf(
     total_height = cover_height + (wrap_margin * 2)
 
     # Load and process the front cover image
-    with WandImage(filename=front_cover_path) as img:
-        img.transform_colorspace("srgb")
-        img.resize(width=cover_width, height=cover_height, filter="lanczos")
-        front_cover = Image.open(img.make_blob("png"))
-    # Ensure the front cover is exactly the right size
-    front_cover = front_cover.resize(
-        (cover_width, cover_height), Image.Resampling.LANCZOS
-    )
+    with Image.open(front_cover_path) as img:
+        # Convert color space if needed (assuming input is Adobe RGB)
+        if img.mode == 'RGB' and img.info.get('icc_profile'):
+            icc = img.info.get('icc_profile')
+            if b'Adobe RGB' in icc:
+                srgb_profile = ImageCms.createProfile('sRGB')
+                img = ImageCms.profileToProfile(img, icc, srgb_profile, outputMode='RGB')
+        
+        # Resize the image
+        img = img.resize((cover_width, cover_height), Image.LANCZOS)
+        
+        # Create a new image with white background
+        front_cover = Image.new('RGB', (cover_width, cover_height), 'white')
+        # Paste the resized image onto the white background
+        front_cover.paste(img, (0, 0), img if img.mode == 'RGBA' else None)
+
     if debug_mode:
         front_cover.save(f"{output_path}_debug_0_front_cover.png")
 
@@ -141,7 +148,7 @@ def generate_cover_pdf(
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
     with Image.open(logo_path) as logo:
         logo_size = INCH_TO_PX(2 / 3)
-        logo = logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
+        logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
         logo_x = wrap_margin + (cover_width - logo_size) // 2
         logo_y = total_height - wrap_margin - bleed_margin - logo_size - INCH_TO_PX(1)
         full_cover.paste(logo, (logo_x, logo_y))
