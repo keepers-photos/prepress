@@ -6,12 +6,10 @@ import img2pdf
 from PIL import Image, ImageCms
 import pikepdf
 
-cmyk_profile = ImageCms.getOpenProfile(
-    os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc")
-)
-adobe_rgb_profile = ImageCms.getOpenProfile(
-    os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc")
-)
+
+cmyk_profile_path = os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc")
+cmyk_profile = ImageCms.getOpenProfile(cmyk_profile_path)
+adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
 
 
 def print_progress(
@@ -55,7 +53,7 @@ def process_image(input_file, width, height):
             )
         return im
     except ImageCms.PyCMSError as e:
-        logging.warning(
+        logging.error(
             f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image."
         )
     except Exception as e:
@@ -107,7 +105,8 @@ def png_to_pdf(image_files, output_path, dpi=300):
         logging.error(f"Error occurred while creating PDF: {e}")
 
 
-def calculate_spine_width(page_count, is_hardcover=False):
+def calculate_spine_width_in_inches(page_count, is_hardcover=False):
+    inch = 1
     if is_hardcover:
         # Hardcover spine width calculation
         if page_count <= 24:

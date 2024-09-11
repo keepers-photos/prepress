@@ -701,3 +701,18 @@
 
 # 2024-09-12 10:02:12.471701
 +/diff
+
+# 2024-09-12 10:12:41.301216
++/ask Unexpected error during color profile conversion for ./.data/0.png: cannot write mode CMYK as PNG. Proceeding with original image.
+
+# 2024-09-12 10:13:42.419451
++/ask I DO NOT want sRGB. Everything MUST be in CMYK.
+
+# 2024-09-12 10:16:00.642102
++/ask TIFF are often very large. any other choices? or maybe my undersatnd is incorrect?
+
+# 2024-09-12 10:17:59.506393
++/ask I need the result to be image so I can generate the cover by pasting it. let's use lossless jpeg. 
+
+# 2024-09-12 10:19:13.170362
++/ask why JPEG2000 instead of JPEG with 100% compression? 

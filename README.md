@@ -98,6 +98,10 @@ Each page of the photobook is stored as a separate png file,
 - resolution: 300 PPI 
 - image size of 8 x 8 inches (2400 x 2400 pixels)
 
+All image files MUST BE converted to CMYK color space 
+using the colour profile. The .icc files requiired for the conversion are
+provided in the `resources` directory.
+
 All pages, including front cover, will be used as full bleed.
 
 Please use imagemagick to upscale or downscale the images to the full bleed
@@ -120,7 +124,6 @@ white space around the images.
 
 - The inner PDF will be a single PDF with all the pages in the order.
 - The file will be created according to the full bleed specifications provided above.
-- The images need to be converted to sRGB IEC61966–2.1 colour profile.
 - Try to parallelize the conversion process to speed up the process.
 - Produce a progress bar to show the progress of the conversion process.
 

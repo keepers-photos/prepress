@@ -64,9 +64,7 @@ if __name__ == "__main__":
     logging.info(f"Book size: {args.book_size}")
     logging.info(f"Verbose mode: {'Enabled' if args.verbose else 'Disabled'}")
 
-    page_count = len(
-        [f for f in os.listdir(args.input_path) if f.endswith(".png") and f != "0.png"]
-    )
+    page_count = len([f for f in os.listdir(args.input_path) if f.endswith(".png") and f != "0.png"])
     logging.info(f"Number of pages: {page_count}")
 
     if args.process in ["pages", "all"]:

@@ -5,7 +5,7 @@ import logging
 import tempfile
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageCms
-from utils import calculate_spine_width, png_to_pdf, process_image
+from utils import calculate_spine_width_in_inches, png_to_pdf, process_image
 
 
 def generate_cover_pdf(
@@ -43,11 +43,12 @@ def generate_cover_pdf(
     cover_width = INCH_TO_PX(8.5 if size_type == "square" else 7.5) + bleed_margin
     cover_height = INCH_TO_PX(8.5 if size_type == "square" else 7.5) + 2 * bleed_margin
     wrap_margin = INCH_TO_PX(0.75) if is_hardcover else 0
-    spine_width = INCH_TO_PX(calculate_spine_width(page_count, is_hardcover))
-
+    spine_width = INCH_TO_PX(calculate_spine_width_in_inches(page_count, is_hardcover))
     total_width = (cover_width * 2) + spine_width + (wrap_margin * 2)
     total_height = cover_height + (wrap_margin * 2)
+
     front_cover = process_image(front_cover_path, cover_width, cover_height)
+    logging.debug(f"Front cover processed: {front_cover_path} ({cover_width}x{cover_height})")
     if verbose_mode:
         front_cover.save(
             f"{output_path}_debug_0_front_cover_processed.png", dpi=(300, 300)
@@ -57,6 +58,7 @@ def generate_cover_pdf(
     front_cover_x = wrap_margin + cover_width + spine_width
     front_cover_y = wrap_margin
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
+    logging.debug(f"Front cover pasted at ({front_cover_x}, {front_cover_y})")
     if verbose_mode:
         full_cover.save(f"{output_path}_debug_1_front_cover.png", dpi=(300, 300))
 
@@ -68,6 +70,7 @@ def generate_cover_pdf(
         logo_x = wrap_margin + (cover_width - logo_size) // 2
         logo_y = total_height - wrap_margin - bleed_margin - logo_size - INCH_TO_PX(1)
         full_cover.paste(logo, (logo_x, logo_y))
+        logging.debug(f"Logo pasted at ({logo_x}, {logo_y})")
     if verbose_mode:
         full_cover.save(f"{output_path}_debug_2_with_logo.png", dpi=(300, 300))
 
@@ -90,6 +93,7 @@ def generate_cover_pdf(
         draw.text(
             (text_x, text_y), book_title, font=font, fill=(89, 89, 89), anchor="mm"
         )
+        logging.debug(f"Spine text added: {book_title} at ({text_x}, {text_y})")
         if verbose_mode:
             full_cover.save(
                 f"{output_path}_debug_3_with_spine_text.png", dpi=(300, 300)
@@ -102,8 +106,8 @@ def generate_cover_pdf(
 
     # Convert PNG to PDF using img2pdf
     png_to_pdf([temp_file_path], output_path)
+    logging.info(f"Cover PDF generated: {output_path}")
 
     # Remove temporary file
     if not verbose_mode:
         os.unlink(temp_file_path)
-    logging.info(f"Cover PDF generated: {output_path}")
