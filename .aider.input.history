@@ -692,3 +692,9 @@
 
 # 2024-09-12 08:21:27.997628
 +/ask do not offer to /add anything in resources
+
+# 2024-09-12 09:59:09.741443
++/add *.py
+
+# 2024-09-12 10:00:19.881104
++rename `create_pdf` to `pngs_to_pdf`

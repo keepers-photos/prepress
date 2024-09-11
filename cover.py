@@ -5,78 +5,7 @@ import logging
 import tempfile
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageCms
-from utils import create_pdf, process_image
-
-# Add the path to the Adobe RGB ICC profile
-ADOBE_RGB_PROFILE_PATH = os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc")
-
-# Define the inch constant
-inch = 1
-
-
-def calculate_spine_width(page_count, is_hardcover=False):
-    if is_hardcover:
-        # Hardcover spine width calculation
-        if page_count <= 24:
-            return 0.25 * inch
-        elif page_count <= 84:
-            return 0.25 * inch
-        elif page_count <= 140:
-            return 0.5 * inch
-        elif page_count <= 168:
-            return 0.625 * inch
-        elif page_count <= 194:
-            return 0.688 * inch
-        elif page_count <= 222:
-            return 0.75 * inch
-        elif page_count <= 250:
-            return 0.813 * inch
-        elif page_count <= 278:
-            return 0.875 * inch
-        elif page_count <= 306:
-            return 0.938 * inch
-        elif page_count <= 334:
-            return 1.0 * inch
-        elif page_count <= 360:
-            return 1.063 * inch
-        elif page_count <= 388:
-            return 1.125 * inch
-        elif page_count <= 416:
-            return 1.188 * inch
-        elif page_count <= 444:
-            return 1.25 * inch
-        elif page_count <= 472:
-            return 1.313 * inch
-        elif page_count <= 500:
-            return 1.375 * inch
-        elif page_count <= 528:
-            return 1.438 * inch
-        elif page_count <= 556:
-            return 1.5 * inch
-        elif page_count <= 582:
-            return 1.563 * inch
-        elif page_count <= 610:
-            return 1.625 * inch
-        elif page_count <= 638:
-            return 1.688 * inch
-        elif page_count <= 666:
-            return 1.75 * inch
-        elif page_count <= 694:
-            return 1.813 * inch
-        elif page_count <= 722:
-            return 1.875 * inch
-        elif page_count <= 750:
-            return 1.938 * inch
-        elif page_count <= 778:
-            return 2.0 * inch
-        elif page_count <= 800:
-            return 2.063 * inch
-        else:
-            return 2.125 * inch
-    else:
-        # Paperback spine width calculation
-        return (page_count / 444 + 0.06) * inch
-
+from utils import calculate_spine_width, create_pdf, process_image
 
 def generate_cover_pdf(
     front_cover_path,
@@ -167,7 +96,7 @@ def generate_cover_pdf(
         temp_file_path = temp_file.name
 
     # Convert PNG to PDF using img2pdf
-    create_pdf([temp_file_path], output_path, dpi=DPI)
+    create_pdf([temp_file_path], output_path)
 
     # Remove temporary file
     if not verbose_mode:

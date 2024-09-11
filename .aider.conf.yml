@@ -2,6 +2,5 @@ model: claude-3-5-sonnet-20240620
 read: [README.md, requirements.txt]
 cache-prompts: true
 stream: false
-auto-commits: true
 auto-lint: true
-lint: black .
+lint-cmd: black .

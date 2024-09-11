@@ -50,7 +50,7 @@ def generate_interior_pdf(input_path, output_path, book_size, debug=False):
         return
 
     logging.info("Combining images into PDF...")
-    create_pdf(processed_files, output_path, dpi=300)
+    create_pdf(processed_files, output_path)
 
     if not debug:
         logging.info("Cleaning up temporary files...")
