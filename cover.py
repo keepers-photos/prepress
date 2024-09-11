@@ -5,7 +5,8 @@ import logging
 import tempfile
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageCms
-from utils import calculate_spine_width, create_pdf, process_image
+from utils import calculate_spine_width, png_to_pdf, process_image
+
 
 def generate_cover_pdf(
     front_cover_path,
@@ -48,7 +49,9 @@ def generate_cover_pdf(
     total_height = cover_height + (wrap_margin * 2)
     front_cover = process_image(front_cover_path, cover_width, cover_height)
     if verbose_mode:
-        front_cover.save(f"{output_path}_debug_0_front_cover_processed.png", dpi=(300, 300))
+        front_cover.save(
+            f"{output_path}_debug_0_front_cover_processed.png", dpi=(300, 300)
+        )
 
     # Paste the front cover
     front_cover_x = wrap_margin + cover_width + spine_width
@@ -88,7 +91,9 @@ def generate_cover_pdf(
             (text_x, text_y), book_title, font=font, fill=(89, 89, 89), anchor="mm"
         )
         if verbose_mode:
-            full_cover.save(f"{output_path}_debug_3_with_spine_text.png", dpi=(300, 300))
+            full_cover.save(
+                f"{output_path}_debug_3_with_spine_text.png", dpi=(300, 300)
+            )
 
     # Save as temporary PNG file
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
@@ -96,7 +101,7 @@ def generate_cover_pdf(
         temp_file_path = temp_file.name
 
     # Convert PNG to PDF using img2pdf
-    create_pdf([temp_file_path], output_path)
+    png_to_pdf([temp_file_path], output_path)
 
     # Remove temporary file
     if not verbose_mode:
