@@ -151,7 +151,7 @@ def generate_cover_pdf(
         front_cover.paste(img, (0, 0), img if img.mode == "RGBA" else None)
 
     if verbose_mode:
-        front_cover.save(f"{output_path}_debug_0_front_cover.png")
+        front_cover.save(f"{output_path}_debug_0_front_cover.png", dpi=(300, 300))
 
     # Create a new image for the full cover
     full_cover = Image.new("RGB", (total_width, total_height), color="white")
@@ -161,7 +161,7 @@ def generate_cover_pdf(
     front_cover_y = wrap_margin
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
     if verbose_mode:
-        full_cover.save(f"{output_path}_debug_1_front_cover.png")
+        full_cover.save(f"{output_path}_debug_1_front_cover.png", dpi=(300, 300))
 
     # Add logo to the back cover
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
@@ -172,7 +172,7 @@ def generate_cover_pdf(
         logo_y = total_height - wrap_margin - bleed_margin - logo_size - INCH_TO_PX(1)
         full_cover.paste(logo, (logo_x, logo_y))
     if verbose_mode:
-        full_cover.save(f"{output_path}_debug_2_with_logo.png")
+        full_cover.save(f"{output_path}_debug_2_with_logo.png", dpi=(300, 300))
 
     # Add spine text if page count is over 80
     if page_count > 80:
@@ -194,7 +194,7 @@ def generate_cover_pdf(
             (text_x, text_y), book_title, font=font, fill=(89, 89, 89), anchor="mm"
         )
         if verbose_mode:
-            full_cover.save(f"{output_path}_debug_3_with_spine_text.png")
+            full_cover.save(f"{output_path}_debug_3_with_spine_text.png", dpi=(300, 300))
 
     # Save as temporary PNG file
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
