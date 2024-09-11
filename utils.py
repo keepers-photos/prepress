@@ -1,8 +1,12 @@
 import logging
 import tempfile
 import os
+import io
 import img2pdf
 from PIL import Image, ImageCms
+
+# Add the path to the Adobe RGB ICC profile
+ADOBE_RGB_PROFILE_PATH = os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc")
 
 
 def print_progress(
@@ -28,13 +32,26 @@ def process_image(input_file, width, height):
     try:
         with Image.open(input_file) as img:
             # Convert color space if needed (assuming input is Adobe RGB)
-            if img.mode == "RGB" and img.info.get("icc_profile"):
-                icc = img.info.get("icc_profile")
-                if b"Adobe RGB" in icc:
+            if img.mode == "RGB":
+                try:
+                    # Create sRGB profile
                     srgb_profile = ImageCms.createProfile("sRGB")
+                    
+                    # Use the provided Adobe RGB profile
+                    adobe_rgb_profile = ImageCms.getOpenProfile(ADOBE_RGB_PROFILE_PATH)
+
+                    # Convert to sRGB
                     img = ImageCms.profileToProfile(
-                        img, icc, srgb_profile, outputMode="RGB"
+                        img, 
+                        inputProfile=adobe_rgb_profile, 
+                        outputProfile=srgb_profile, 
+                        outputMode="RGB",
+                        renderingIntent=ImageCms.INTENT_RELATIVE_COLORIMETRIC
                     )
+                    
+                    logging.debug(f"Color profile converted from Adobe RGB to sRGB for {input_file}")
+                except Exception as e:
+                    logging.warning(f"Failed to convert color profile for {input_file}: {e}. Proceeding with original image.")
 
             # Resize the image
             img = img.resize((width, height), Image.LANCZOS)
