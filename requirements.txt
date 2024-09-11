@@ -1,4 +1,5 @@
-Pillow==10.4.0
-pyright==1.1.379
-Wand==0.6.13
-img2pdf==0.4.4
+aider-chat[playwright]
+Pillow
+pyright
+img2pdf
+black

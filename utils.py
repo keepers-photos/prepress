@@ -46,7 +46,7 @@ def process_image(input_file, width, height):
                         inputProfile=adobe_rgb_profile, 
                         outputProfile=srgb_profile, 
                         outputMode="RGB",
-                        renderingIntent=ImageCms.Intent.RELATIVE_COLORIMETRIC,
+                        renderingIntent=ImageCms.Intent.PERCEPTUAL,
                         flags=ImageCms.Flags.BLACKPOINTCOMPENSATION
                     )
                     
