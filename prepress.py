@@ -50,9 +50,9 @@ if __name__ == "__main__":
         help="Specify the book size: square (8.75x8.75 inches) or small_square (7x7 inches)",
     )
     parser.add_argument(
-        "--debug",
+        "-v", "--verbose",
         action="store_true",
-        help="Enable debug mode to save intermediate images",
+        help="Enable verbose mode to save intermediate images",
     )
 
     args = parser.parse_args()
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     logging.info(f"Order ID: {args.order_id}")
     logging.info(f"Cover type: {args.cover_type}")
     logging.info(f"Book size: {args.book_size}")
-    logging.info(f"Debug mode: {'Enabled' if args.debug else 'Disabled'}")
+    logging.info(f"Verbose mode: {'Enabled' if args.verbose else 'Disabled'}")
 
     page_count = len(
         [f for f in os.listdir(args.input_path) if f.endswith(".png") and f != "0.png"]
@@ -73,7 +73,7 @@ if __name__ == "__main__":
             args.output_path, f"{args.order_id}-interior.pdf"
         )
         generate_interior_pdf(
-            args.input_path, interior_output_path, args.book_size, args.debug
+            args.input_path, interior_output_path, args.book_size, args.verbose
         )
         logging.info(f"Internal pages PDF generated: {interior_output_path}")
 
@@ -105,7 +105,7 @@ if __name__ == "__main__":
                 args.book_size,
                 args.cover_type == "hard_cover",
                 args.book_title,
-                args.debug,
+                args.verbose,
             )
             logging.info(f"Cover PDF generated: {cover_output_path}")
         else:

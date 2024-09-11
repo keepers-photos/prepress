@@ -81,7 +81,7 @@ def generate_cover_pdf(
     size_type="square",
     is_hardcover=False,
     book_title="",
-    debug_mode=False,
+    verbose_mode=False,
 ):
     """
     Generate a cover PDF using PIL/Pillow and img2pdf.
@@ -97,7 +97,7 @@ def generate_cover_pdf(
     The function maintains a 300 DPI resolution throughout the process and
     converts the color profile from AdobeRGB to sRGB.
 
-    If debug_mode is True, intermediate images are saved for inspection.
+    If verbose_mode is True, intermediate images are saved for inspection.
     """
 
     # Define constants
@@ -131,7 +131,7 @@ def generate_cover_pdf(
         # Paste the resized image onto the white background
         front_cover.paste(img, (0, 0), img if img.mode == 'RGBA' else None)
 
-    if debug_mode:
+    if verbose_mode:
         front_cover.save(f"{output_path}_debug_0_front_cover.png")
 
     # Create a new image for the full cover
@@ -186,6 +186,6 @@ def generate_cover_pdf(
     create_pdf([temp_file_path], output_path, dpi=DPI)
 
     # Remove temporary file
-    if not debug_mode:
+    if not verbose_mode:
         os.unlink(temp_file_path)
     logging.info(f"Cover PDF generated: {output_path}")
