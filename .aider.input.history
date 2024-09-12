@@ -890,3 +890,15 @@
 +0700X1000FCPRECO060UC444MXX	7" x 10" black-and-white premium coil-bound book printed on 60# cream paper with a matte cover
 +0600X0900BWSTDPB060UW444MXX	6" x 9" black-and-white standard quality paperback book printed on 60# white paper with a matte cover
 +}
+
+# 2024-09-12 21:29:50.074852
++move the `generate_pod_package_id` to pricing.py
+
+# 2024-09-12 21:31:11.388400
++{
+
+# 2024-09-12 21:32:11.004150
++add __main__ to pricing.py that dumps all `pod_package_id` for the 4 combinations
+
+# 2024-09-12 21:32:28.830315
++/run python pricing.py
