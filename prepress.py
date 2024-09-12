@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(
         level=getattr(logging, args.log_level),
-        format="%(asctime)s - %(levelname)s - %(message)s"
+        format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     logging.info(f"Processing book: {args.book_title}")
