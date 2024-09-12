@@ -78,69 +78,70 @@ def calculate_spine_width_in_inches(page_count, is_hardcover=False):
     if is_hardcover:
         # Hardcover spine width calculation
         if page_count <= 24:
-            return 0.25 
+            return 0.25
         elif page_count <= 84:
-            return 0.25 
+            return 0.25
         elif page_count <= 140:
-            return 0.5 
+            return 0.5
         elif page_count <= 168:
-            return 0.625 
+            return 0.625
         elif page_count <= 194:
-            return 0.688 
+            return 0.688
         elif page_count <= 222:
-            return 0.75 
+            return 0.75
         elif page_count <= 250:
-            return 0.813 
+            return 0.813
         elif page_count <= 278:
-            return 0.875 
+            return 0.875
         elif page_count <= 306:
-            return 0.938 
+            return 0.938
         elif page_count <= 334:
-            return 1.0 
+            return 1.0
         elif page_count <= 360:
-            return 1.063 
+            return 1.063
         elif page_count <= 388:
-            return 1.125 
+            return 1.125
         elif page_count <= 416:
-            return 1.188 
+            return 1.188
         elif page_count <= 444:
-            return 1.25 
+            return 1.25
         elif page_count <= 472:
-            return 1.313 
+            return 1.313
         elif page_count <= 500:
-            return 1.375 
+            return 1.375
         elif page_count <= 528:
-            return 1.438 
+            return 1.438
         elif page_count <= 556:
-            return 1.5 
+            return 1.5
         elif page_count <= 582:
-            return 1.563 
+            return 1.563
         elif page_count <= 610:
-            return 1.625 
+            return 1.625
         elif page_count <= 638:
-            return 1.688 
+            return 1.688
         elif page_count <= 666:
-            return 1.75 
+            return 1.75
         elif page_count <= 694:
-            return 1.813 
+            return 1.813
         elif page_count <= 722:
-            return 1.875 
+            return 1.875
         elif page_count <= 750:
-            return 1.938 
+            return 1.938
         elif page_count <= 778:
-            return 2.0 
+            return 2.0
         elif page_count <= 800:
-            return 2.063 
+            return 2.063
         else:
-            return 2.125 
+            return 2.125
     else:
         # Paperback spine width calculation
-        return (page_count / 444 + 0.06) 
+        return page_count / 444 + 0.06
+
 
 def generate_pod_package_id(cover_type, size_type, page_count):
     """
     Generate the pod_package_id for the given cover type and size.
-    
+
     :param cover_type: 'hard_cover' or 'soft_cover'
     :param size_type: 'small_square' or 'square'
     :param page_count: number of pages in the book
@@ -150,13 +151,17 @@ def generate_pod_package_id(cover_type, size_type, page_count):
     trim_size = "0750X0750" if size_type == "small_square" else "0850X0850"
     color = "FC"  # Full color
     print_quality = "STD"  # Standard quality
-    bind = "LW" if cover_type == "hard_cover" else "PB"  # Linen wrap for hardcover, Perfect binding for softcover
+    bind = (
+        "LW" if cover_type == "hard_cover" else "PB"
+    )  # Linen wrap for hardcover, Perfect binding for softcover
     paper = "080CW444"  # 80# coated white paper with a bulk of 444 ppi
     finish = "G"  # Gloss cover coating
     linen = "X"  # No linen (for softcover)
     foil = "X"  # No foil
 
     # Combine all components
-    pod_package_id = f"{trim_size}{color}{print_quality}{bind}{paper}{finish}{linen}{foil}"
+    pod_package_id = (
+        f"{trim_size}{color}{print_quality}{bind}{paper}{finish}{linen}{foil}"
+    )
 
     return pod_package_id
