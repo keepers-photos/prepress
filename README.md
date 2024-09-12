@@ -24,53 +24,59 @@ this document as "the guide" in the following sections.
 
 Please use the terms defined on the Page 9 and 10 of the guide.
 
-### Book Cover Specifications (For a 6x9 book)
 
-- Single page, portrait oriented layout
+### Book Cover Specifications 
+
+- The final PDF should be a single-page layout. 
 - Embedded images are 300 PPI resolution minimum, not exceeding 600 PPI
   resolution
 - Vector images are rasterized
 - All fonts are embedded
 - Transparent layers and vector objects are flattened
-- Pages sized to match intended trim size: Trim Size = 6 x 9 in/152.4 x 228.6
-  mm Page Size = 6.25 x 9.25 in/158.75 x 234.95 mm
-- A minimum 0.5 in/12.7 mm Safety Margin
-- A minimum 0.2 in/2.08 mm Gutter Margin
 - Do NOT include trim, bleed, or margin lines
 - Do NOT use any security/password file protection
-
-### Interior File with Bleed Specifications (For a 6x9 book)
-
-- Page size must be 0.25 in (6.35 mm) larger in both width and height than the
-  book size. Example: 6 x 9 in (152 mm x 229 mm) book requires a PDF with pages
-  sized 6.25 x 9.25 in (159 mm x 235 mm).
-- Interior should be output as a single-page layout, print-ready PDF with all
-  pages created at the same size and orientation.
-- Crop marks or registration marks should not be included.
-- If your book is intended for distribution, any text within an image must be
-  positioned at least 0.5 in (12.7 mm) from the edge of the finished page size.
-- Although we make every effort to provide high-quality, consistently produced
-  books, there can be slight variations from press to press in the trim size of
-  your work. 
-- Allow for a printing trim variance of 0.125 in (3.17 mm).
+- The PDF should contain the front cover, spine, back cover and the wrap area
+  for the hard cover.
+- The spine width is calculated based on the number of pages in the book.
+- The back cover will be placed center bottom of the left page of the cover
+  PDF. It'll be 0.5" high and 2" from the bottom of the trim edge.
+- The wrap area for the hard cover is 0.75" on all edges. The wrap area must be
+  included in the cover PDF.
+- The front cover should be on the right side of the cover PDF. It should
+  include the bleed area on top, right and bottom edges. But not on the left
+  edge.
 
 
-### Interior File with Full Bleed Specifications
+### Calculation of Cover Print Ready PDF
 
-- Page size must be 0.25 in (6.35 mm) larger in both width and height than the book size. 
-- Example: 6 x 9 in (152 mm x 229 mm) book requires a PDF with pages sized 6.25 x 9.25 in (159 mm x 235 mm).
-- Interior should be output as a single-page layout, print-ready PDF with all pages created at the same size and orientation.
-- Crop marks or registration marks should not be included.
-- If your book is intended for distribution, any text within an image must be positioned at least 0.5 in (12.7 mm) from the edge of the finished page size.
-- Although we make every effort to provide high-quality, consistently produced books, there can be slight variations from press to press in the trim size of your work. Allow for a printing trim variance of 0.125 in (3.17 mm).
+For a hard cover small square book with 89 pages, the spine width is 0.5 inch.
 
+    17.25 = 2 * 0.125 + 0.75 * 2 + 2 * 7.5 + 0.5  
+    9.25 = 0.75 * 2 + 7.5 + 2 * 0.125 
 
-### Example Cover PDF 
+For a soft cover small square book with 89 pages, the spine width is 0.25 inch.
+    
+    15.51 = 2 * 0.125 + 2 * 7.5 + 0.25
+    7.75 = 2 * 0.125 + 7.5
 
 Lulu provides two example cover PDFs in the "spec" directory. The files are
 
-- `spec/8.5x8.5_hard_cover-89_pages.pdf`
-- `spec/8.5x8.5_soft_cover-89_pages.pdf`
+- `spec/template-7.5x7.5_hard_cover-89_pages.pdf`
+- `spec/template-7.5x7.5_soft_cover-89_pages.pdf`
+
+
+### Interior File with Full Bleed Specifications (For a 7.5 x 7.5 in book)
+
+- Page size must be 0.25 in (6.35 mm) larger in both width and height than the
+  book size. The interor file should be 7.75 x 7.75 in (197 mm x 197 mm).
+- Interior should be output as a single-page layout, print-ready PDF with all
+  pages created at the same size and orientation.
+- Crop marks or registration marks should not be included.
+- Although we make every effort to provide high-quality, consistently produced
+  books, there can be slight variations from press to press in the trim size of
+  your work. Allow for a printing trim variance of 0.125 in (3.17 mm).
+
+### Example Cover PDF 
 
 
 ## Keepers Specs

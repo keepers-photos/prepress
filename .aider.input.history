@@ -842,3 +842,9 @@
 
 # 2024-09-12 15:46:52.650092
 +/commit
+
+# 2024-09-12 15:47:56.685663
++/ask the font size should be smaller than "spine_width // 2" because the spine needs to leave padding for `bleed_margin`. 
+
+# 2024-09-12 16:04:30.573623
++/ask Image.new do I need to specify dpi?
