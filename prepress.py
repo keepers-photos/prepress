@@ -81,7 +81,7 @@ if __name__ == "__main__":
     if args.process in ["pages", "all"]:
         interior_output_path = os.path.join(
             args.output_path,
-            f"{args.order_id}-interior-{args.cover_type}-{args.book_size}.pdf",
+            f"{args.order_id}-{args.cover_type}-{args.book_size}-interior.pdf",
         )
         generate_interior_pdf(
             args.input_path, interior_output_path, args.book_size, args.verbose
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     if args.process in ["cover", "all"]:
         cover_output_path = os.path.join(
             args.output_path,
-            f"{args.order_id}-cover-{args.cover_type}-{args.book_size}.pdf",
+            f"{args.order_id}-{args.cover_type}-{args.book_size}-cover.pdf",
         )
         front_cover_path = os.path.join(args.input_path, "0.png")
         if os.path.exists(front_cover_path):

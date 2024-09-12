@@ -63,6 +63,8 @@ def process_image(input_file, width, height):
 
 
 def image_to_pdf(image_files, output_path, dpi=300):
+    # We use img2pdf to convert images to PDF because it's a simple, fast container
+    # for images that retains the original image quality and color profiles.
     try:
         # Convert images to PDF using img2pdf
         with open(output_path, "wb") as f:
