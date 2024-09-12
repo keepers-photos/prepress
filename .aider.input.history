@@ -848,3 +848,6 @@
 
 # 2024-09-12 16:04:30.573623
 +/ask Image.new do I need to specify dpi?
+
+# 2024-09-12 17:09:25.588377
++/ask the PDF file's dimesnion should be the same as COVER_WIDTH. Maybe I need to provide the DPI when running image_to_dpi?

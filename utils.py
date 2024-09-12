@@ -2,9 +2,7 @@ import logging
 import tempfile
 import os
 import io
-import img2pdf
 from PIL import Image, ImageCms
-import pikepdf
 
 
 cmyk_profile_path = os.path.join(
@@ -62,15 +60,14 @@ def process_image(input_file, width, height):
         return None
 
 
-def image_to_pdf(image_files, output_path, dpi=300):
+def image_to_pdf(image_files, output_path):
     # We use img2pdf to convert images to PDF because it's a simple, fast container
     # for images that retains the original image quality and color profiles.
     try:
-        # Convert images to PDF using img2pdf
-        with open(output_path, "wb") as f:
-            f.write(img2pdf.convert(image_files, dpi=dpi))
-
-        logging.info(f"PDF created successfully at {output_path}")
+        # Convert images to PDF using `img2pdf {image_files} -o {output_path}` on the command line
+        sys_command = f"img2pdf {' '.join(image_files)} -o {output_path}"
+        logging.debug(f"image_to_pdf - Running command: {sys_command}")
+        os.system(sys_command)
     except Exception as e:
         logging.error(f"Error occurred while creating PDF: {e}")
 

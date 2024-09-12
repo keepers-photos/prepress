@@ -87,11 +87,13 @@ def generate_cover_pdf(
 
         # Calculate available spine width after accounting for bleed margin
         available_spine_width = spine_width - (2 * bleed_margin)
-        font_size = min(24, available_spine_width)  # Adjusted font size
+        font_size = max(24, available_spine_width // 2)  # Adjusted font size
         logging.debug(f"generate_cover_pdf - spine font size: {font_size}")
         font = ImageFont.truetype(font_path, font_size)
 
-        spine_center_x = wrap_margin + cover_width + spine_width // 2 + bleed_margin
+        # Calculate spine text position. The x coordinate is the center of the spine.
+        # and it's adjusted to account for the bleed margin.
+        spine_center_x = wrap_margin + cover_width + spine_width // 2 - (2 if is_hardcover else 1) * bleed_margin
         spine_center_y = total_height // 2
 
         # Rotate the text -90 degrees
@@ -127,7 +129,7 @@ def generate_cover_pdf(
 
     # Save as temporary file
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
-        full_cover.save(temp_file, "JPEG", resolution=DPI)
+        full_cover.save(temp_file, "JPEG", dpi=(300, 300))
         temp_file_path = temp_file.name
 
     # Convert PNG to PDF using img2pdf

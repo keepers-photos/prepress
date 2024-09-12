@@ -51,13 +51,13 @@ Please use the terms defined on the Page 9 and 10 of the guide.
 
 For a hard cover small square book with 89 pages, the spine width is 0.5 inch.
 
-    17.25 = 2 * 0.125 + 0.75 * 2 + 2 * 7.5 + 0.5  
-    9.25 = 0.75 * 2 + 7.5 + 2 * 0.125 
+    17.25 = 2 * 0.125 + 0.75 * 2 + 2 * 7.5 + 0.5 = 43.815 cm
+    9.25 = 0.75 * 2 + 7.5 + 2 * 0.125 = 23.495 cm
 
 For a soft cover small square book with 89 pages, the spine width is 0.25 inch.
     
-    15.51 = 2 * 0.125 + 2 * 7.5 + 0.25
-    7.75 = 2 * 0.125 + 7.5
+    15.51 = 2 * 0.125 + 2 * 7.5 + 0.25 = 39.39 cm
+    7.75 = 2 * 0.125 + 7.5 = 19.685 cm
 
 Lulu provides two example cover PDFs in the "spec" directory. The files are
 
