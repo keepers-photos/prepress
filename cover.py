@@ -91,7 +91,7 @@ def generate_cover_pdf(
         spine_center_x = wrap_margin + cover_width + spine_width // 2
         spine_center_y = total_height // 2
 
-        # Rotate the text 90 degrees
+        # Rotate the text -90 degrees
         rotated_text = Image.new("CMYK", (cover_height, spine_width), (0, 0, 0, 0))
         rotated_draw = ImageDraw.Draw(rotated_text)
         bbox = rotated_draw.textbbox((0, 0), book_title, font=font)
@@ -103,7 +103,9 @@ def generate_cover_pdf(
         rotated_draw.text(
             (text_x, text_y), book_title, font=font, fill=(0, 0, 100, 0)
         )  # Changed color to pure yellow in CMYK
-        rotated_text = rotated_text.rotate(90, expand=1)
+        rotated_text = rotated_text.rotate(-90, expand=1)
+        if verbose_mode:
+            rotated_text.save(f"{output_path}_debug_3_rotated_text.jpg", dpi=(300, 300))
 
         full_cover.paste(
             rotated_text, (spine_center_x - spine_width // 2, wrap_margin), rotated_text
@@ -119,7 +121,7 @@ def generate_cover_pdf(
                 f"{output_path}_debug_3_with_spine_text.jpg", dpi=(300, 300)
             )
 
-    # Save as temporary PNG file
+    # Save as temporary file
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
         full_cover.save(temp_file, "JPEG", resolution=DPI)
         temp_file_path = temp_file.name
