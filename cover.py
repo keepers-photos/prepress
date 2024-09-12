@@ -38,7 +38,9 @@ def generate_cover_pdf(
 
     COVER_WIDTH = 2 * WRAP_MARGIN + COVER_IMAGE_WIDTH * 2 + SPINE_WIDTH
     COVER_HEIGHT = 2 * WRAP_MARGIN + COVER_IMAGE_HEIGHT
-    logging.debug(f"generate_cover_pdf - {output_path}: {COVER_WIDTH}x{COVER_HEIGHT} inches")
+    logging.debug(
+        f"generate_cover_pdf - {output_path}: {COVER_WIDTH}x{COVER_HEIGHT} inches"
+    )
 
     # Define dimensions in pixels
     DPI = 300
@@ -59,7 +61,9 @@ def generate_cover_pdf(
     front_cover_y = wrap_margin
     front_cover = Image.open(front_cover_path)
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
-    logging.debug(f"generate_cover_pdf - front cover pasted at: ({front_cover_x}, {front_cover_y})")
+    logging.debug(
+        f"generate_cover_pdf - front cover pasted at: ({front_cover_x}, {front_cover_y})"
+    )
     if verbose_mode:
         full_cover.save(f"{output_path}_debug_1_front_cover.jpg", dpi=(300, 300))
 
@@ -93,7 +97,12 @@ def generate_cover_pdf(
 
         # Calculate spine text position. The x coordinate is the center of the spine.
         # and it's adjusted to account for the bleed margin.
-        spine_center_x = wrap_margin + cover_width + spine_width // 2 - (2 if is_hardcover else 1) * bleed_margin
+        spine_center_x = (
+            wrap_margin
+            + cover_width
+            + spine_width // 2
+            - (2 if is_hardcover else 1) * bleed_margin
+        )
         spine_center_y = total_height // 2
 
         # Rotate the text -90 degrees
@@ -110,7 +119,9 @@ def generate_cover_pdf(
 
         text_x = (cover_height - total_width) // 2
         text_y = (spine_width - text_height) // 2
-        logging.debug(f"generate_cover_pdf - Text position: ({spine_center_x}, {spine_center_y})")
+        logging.debug(
+            f"generate_cover_pdf - Text position: ({spine_center_x}, {spine_center_y})"
+        )
 
         # Draw text with letter-spacing
         x = text_x
@@ -123,9 +134,13 @@ def generate_cover_pdf(
             rotated_text.save(f"{output_path}_debug_3_rotated_text.jpg", dpi=(300, 300))
 
         full_cover.paste(rotated_text, (spine_center_x, wrap_margin))
-        logging.debug(f"generate_cover_pdf - Spine text pasted at: ({spine_center_x}, {wrap_margin})")
+        logging.debug(
+            f"generate_cover_pdf - Spine text pasted at: ({spine_center_x}, {wrap_margin})"
+        )
         if verbose_mode:
-            full_cover.save(f"{output_path}_debug_3_with_spine_text.jpg", dpi=(300, 300))
+            full_cover.save(
+                f"{output_path}_debug_3_with_spine_text.jpg", dpi=(300, 300)
+            )
 
     # Save as temporary file
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:

@@ -851,3 +851,42 @@
 
 # 2024-09-12 17:09:25.588377
 +/ask the PDF file's dimesnion should be the same as COVER_WIDTH. Maybe I need to provide the DPI when running image_to_dpi?
+
+# 2024-09-12 20:58:10.281712
++/add interior.py utils.py
+
+# 2024-09-12 20:58:59.572514
++/ask the `process_image` for `generate_interior_pdf` created images with 72 DPI, instead of 300.
+
+# 2024-09-12 21:03:34.277182
++{
+
+# 2024-09-12 21:03:55.566434
++generate the pod_package_id for the 2x2 cover_type and size
+
+# 2024-09-12 21:04:04.658442
++Lulu's Print API offers a wide range of products. Each product is represented by a 27 character code call pod_package_id:
++
++Trim Size + Color + Print Quality + Bind + Paper + PPI + Finish + Linen + Foil = pod_package_id
++Here are a few examples:
++
++pod_package_id	Description
++0850X1100BWSTDLW060UW444MNG	0850X1100: trim size 8.5” x 11”
++BW: black-and-white
++STD: standard quality
++LW: linen wrap binding
++060UW444: 60# uncoated white paper with a bulk of 444 pages per inch
++M: matte cover coating
++N: navy colored linen
++G: golden foil stamping
++0600X0900FCSTDPB080CW444GXX	0600X0900: trim size 6” x 9”
++FC: full color
++STD: standard quality
++PB: perfect binding
++080CW444: 80# coated white paper with a bulk of 444 ppi
++G: gloss cover coating
++X: no linen
++X: no foil
++0700X1000FCPRECO060UC444MXX	7" x 10" black-and-white premium coil-bound book printed on 60# cream paper with a matte cover
++0600X0900BWSTDPB060UW444MXX	6" x 9" black-and-white standard quality paperback book printed on 60# white paper with a matte cover
++}
