@@ -47,7 +47,9 @@ def generate_cover_pdf(
 
     front_cover_path = process_image(front_cover_path, cover_width, cover_height)
     logging.debug(f"Front cover processed: {front_cover_path}")
-    logging.debug(f"Front cover processed: {front_cover_path} ({cover_width}x{cover_height})")
+    logging.debug(
+        f"Front cover processed: {front_cover_path} ({cover_width}x{cover_height})"
+    )
     front_cover = Image.open(front_cover_path)
     logging.debug(f"Front cover opened: {front_cover_path} {front_cover.size}")
     if verbose_mode:
@@ -56,7 +58,7 @@ def generate_cover_pdf(
     # Paste the front cover
     total_width = (cover_width * 2) + spine_width + (wrap_margin * 2)
     total_height = cover_height + (wrap_margin * 2)
-    full_cover = Image.new("CMYK", (total_width, total_height), color=(0, 0, 0))
+    full_cover = Image.new("CMYK", (total_width, total_height), color=(0, 0, 0, 0))
     front_cover_x = wrap_margin + cover_width + spine_width
     front_cover_y = wrap_margin
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
@@ -93,7 +95,7 @@ def generate_cover_pdf(
         text_y = spine_top_y + (cover_height - text_width) // 2
 
         draw.text(
-            (text_x, text_y), book_title, font=font, fill=(89, 89, 89), anchor="mm"
+            (text_x, text_y), book_title, font=font, fill=(0, 0, 0, 89), anchor="mm"
         )
         logging.debug(f"Spine text added: {book_title} at ({text_x}, {text_y})")
         if verbose_mode:
