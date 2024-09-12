@@ -81,27 +81,34 @@ def generate_cover_pdf(
     # Add spine text if page count is over 80
     if page_count > 80:
         draw = ImageDraw.Draw(full_cover)
-        font_path = "SF-Pro.ttf"
-        font_size = min(12, (spine_width - 2 * bleed_margin) // 4)
+        font_path = os.path.join(os.path.dirname(__file__), "resources", "SF-Pro.ttf")
+        font_size = min(24, spine_width // 2)  # Increased font size
         font = ImageFont.truetype(font_path, font_size)
 
         spine_center_x = wrap_margin + cover_width + spine_width // 2
-        spine_top_y = wrap_margin + bleed_margin + INCH_TO_PX(1)
+        spine_center_y = total_height // 2
 
-        bbox = draw.textbbox((0, 0), book_title, font=font)
+        # Rotate the text 90 degrees
+        rotated_text = Image.new('CMYK', (cover_height, spine_width), (0, 0, 0, 0))
+        rotated_draw = ImageDraw.Draw(rotated_text)
+        bbox = rotated_draw.textbbox((0, 0), book_title, font=font)
         text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
-        text_x = spine_center_x - text_height // 2
-        text_y = spine_top_y + (cover_height - text_width) // 2
+        text_x = (cover_height - text_width) // 2
+        text_y = (spine_width - text_height) // 2
 
-        draw.text(
-            (text_x, text_y), book_title, font=font, fill=(0, 0, 0, 89), anchor="mm"
-        )
-        logging.debug(f"Spine text added: {book_title} at ({text_x}, {text_y})")
+        rotated_draw.text((text_x, text_y), book_title, font=font, fill=(0, 0, 100, 0))  # Changed color to pure yellow in CMYK
+        rotated_text = rotated_text.rotate(90, expand=1)
+
+        full_cover.paste(rotated_text, (spine_center_x - spine_width // 2, wrap_margin), rotated_text)
+
+        logging.debug(f"Spine text added: '{book_title}'")
+        logging.debug(f"Spine width: {spine_width} pixels")
+        logging.debug(f"Font size: {font_size}")
+        logging.debug(f"Text position: ({spine_center_x}, {spine_center_y})")
+
         if verbose_mode:
-            full_cover.save(
-                f"{output_path}_debug_3_with_spine_text.jpg", dpi=(300, 300)
-            )
+            full_cover.save(f"{output_path}_debug_3_with_spine_text.jpg", dpi=(300, 300))
 
     # Save as temporary PNG file
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
