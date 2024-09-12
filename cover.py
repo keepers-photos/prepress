@@ -96,11 +96,13 @@ def generate_cover_pdf(
         rotated_draw = ImageDraw.Draw(rotated_text)
         bbox = rotated_draw.textbbox((0, 0), book_title, font=font)
         text_height = bbox[3] - bbox[1]
-        
+
         # Calculate total width with letter-spacing
         letter_spacing = 5  # Adjust this value to increase or decrease spacing
-        total_width = sum(rotated_draw.textlength(char, font=font) for char in book_title) + letter_spacing * (len(book_title) - 1)
-        
+        total_width = sum(
+            rotated_draw.textlength(char, font=font) for char in book_title
+        ) + letter_spacing * (len(book_title) - 1)
+
         text_x = (cover_height - total_width) // 2
         text_y = (spine_width - text_height) // 2
 
