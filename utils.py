@@ -59,38 +59,11 @@ def process_image(input_file, width, height):
 
 def image_to_pdf(image_files, output_path, dpi=300):
     try:
-        pdf_bytes = img2pdf.convert(image_files, dpi=dpi)
+        # Convert images to PDF using img2pdf
+        with open(output_path, "wb") as f:
+            f.write(img2pdf.convert(image_files, dpi=dpi))
 
-        # Create a temporary file for the initial PDF
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
-            temp_pdf.write(pdf_bytes)
-            temp_pdf_path = temp_pdf.name
-
-        # Open the temporary PDF and embed the CMYK color profile
-        with pikepdf.Pdf.open(temp_pdf_path) as pdf:
-            with open(cmyk_profile_path, "rb") as icc:
-                icc_profile = icc.read()
-
-            for page in pdf.pages:
-                page.add_resource(
-                    pikepdf.Name.ColorSpace,
-                    pikepdf.Name.DefaultCMYK,
-                    pikepdf.Array(
-                        [
-                            pikepdf.Name.ICCBased,
-                            pdf.make_indirect(pikepdf.Stream(pdf, icc_profile)),
-                        ]
-                    ),
-                )
-
-            pdf.save(output_path)
-
-        # Remove the temporary PDF file
-        os.unlink(temp_pdf_path)
-
-        logging.info(
-            f"PDF created successfully with embedded CMYK profile at {output_path}"
-        )
+        logging.info(f"PDF created successfully at {output_path}")
     except Exception as e:
         logging.error(f"Error occurred while creating PDF: {e}")
 
