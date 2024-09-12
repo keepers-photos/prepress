@@ -740,3 +740,96 @@
 
 # 2024-09-12 14:28:00.344972
 +/web https://pikepdf.readthedocs.io/en/latest/api/models.html#pikepdf._core.Attachments
+
+# 2024-09-12 14:33:09.278927
++/ask Error occurred while creating PDF: Dictionaries can only contain Names
+
+# 2024-09-12 14:35:07.159649
++/ask the background color of the full cover is black. how can i make it white?
+
+# 2024-09-12 14:37:19.224776
++/ask 
++
+
+# 2024-09-12 14:37:28.807269
++/ask Error occurred while creating PDF: Name objects must begin with '/'
+
+# 2024-09-12 14:40:52.958327
++/ask how can i convert a jpg to pdf?
+
+# 2024-09-12 14:48:26.428069
++/ask when I convert png to jpeg, can i specify the colourspace of the jpg file? Currently, it says "Colour Model: RGB", Colorsync profile: "Generic CMYK Profile"
+
+# 2024-09-12 14:52:34.207902
++/ask I have already used `img = ImageCms.profileToProfile(..., outputMode="CMYK")` in process_image in `utils.py`, do I still need to call "img.convert"?
+
+# 2024-09-12 14:53:43.193528
++/ask change the `image_to_pdf` to replace Pike with img2pdf. 
+
+# 2024-09-12 14:54:23.659536
++ok. make the change
+
+# 2024-09-12 14:56:49.159908
++/ask how can I attach the resources/sRGB-IEC61966-2.1.icc to each jpeg?
+
+# 2024-09-12 14:57:52.122357
++/ask sorry. Use CMYK from GRACoL2006_Coated1v2.icc. We should never go to sRGB.[
+
+# 2024-09-12 15:00:30.315222
++/add *.py
+
+# 2024-09-12 15:00:44.282249
++add a new command line argument that allows me to specify logging level.
+
+# 2024-09-12 15:04:41.350900
++if --verbose is specified, set log-level to be debug
++
+
+# 2024-09-12 15:06:28.538506
++/ask i can't see the spine text
+
+# 2024-09-12 15:07:40.250368
++do it
+
+# 2024-09-12 15:08:22.546861
++{
+
+# 2024-09-12 15:08:24.136228
++2024-09-12 15:08:08,561 - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00|'
++2024-09-12 15:08:08,571 - DEBUG - Logo pasted at (1193, 2087)
++Traceback (most recent call last):
++  File "/Users/alexdong/Projects/keepers-prepress/prepress.py", line 111, in <module>
++    generate_cover_pdf(
++  File "/Users/alexdong/Projects/keepers-prepress/cover.py", line 105, in generate_cover_pdf
++    full_cover.paste(
++  File "/Users/alexdong/Projects/keepers-prepress/.venv/lib/python3.9/site-packages/PIL/Image.py", line 1847, in paste
++    self.im.paste(im, box, mask.im)
++ValueError: bad transparency mask
+
+# 2024-09-12 15:08:25.025284
++}
+
+# 2024-09-12 15:10:13.710102
++/ask the exception happens Line 108, when we paste the rotated_text onto `full_cover`. 
+
+# 2024-09-12 15:18:41.631630
++/add *.py
+
+# 2024-09-12 15:19:28.457483
++/ask when i `generate_cover_pdf`,   File "/Users/alexdong/Projects/keepers-prepress/cover.py", line 110, in generate_cover_pdf
++    full_cover.paste(rotated_text, ...) throws an exception: "ValueError: bad transparency mask".
+
+# 2024-09-12 15:19:41.345134
++y
+
+# 2024-09-12 15:22:24.288569
++/ask this works. thanks. but why do i need "rotated_text = rotated_text.convert("CMYK")"? earlier I have "rotated_text = Image.new("CMYK", (cover_height, spine_width), (0, 0, 0, 0))" already?
+
+# 2024-09-12 15:24:03.247966
++/ask i want the text to be darker: book_title, font=font, fill=(0, 0, 0, 95)
+
+# 2024-09-12 15:24:53.034524
++/ask add letter-spacing 
+
+# 2024-09-12 15:25:35.681407
++y

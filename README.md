@@ -93,14 +93,13 @@ The naming convention of the files is as follows:
 
 ### Individual Image Specs
 
-Each page of the photobook is stored as a separate png file,
+Each page of the photobook is stored as a separate png file like 1.png, 2.png, etc.
 - colour profile: Adobe RGB (1998)
 - resolution: 300 PPI 
 - image size of 8 x 8 inches (2400 x 2400 pixels)
 
-All image files MUST BE converted to CMYK color space 
-using the colour profile. The .icc files requiired for the conversion are
-provided in the `resources` directory.
+All image files MUST BE converted from "Adobe RGB" to "CMYK", using the colour
+profile. .icc files in the `resources` directory.
 
 All pages, including front cover, will be used as full bleed.
 

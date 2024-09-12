@@ -3,4 +3,3 @@ Pillow
 pyright
 img2pdf
 black
-pikepdf
