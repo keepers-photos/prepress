@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     if args.process in ["pages", "all"]:
         interior_output_path = os.path.join(
-            args.output_path, f"{args.order_id}-interior.pdf"
+            args.output_path, f"{args.order_id}-interior-{args.cover_type}-{args.book_size}.pdf"
         )
         generate_interior_pdf(
             args.input_path, interior_output_path, args.book_size, args.verbose
@@ -91,7 +91,7 @@ if __name__ == "__main__":
         if not os.path.exists(interior_output_path):
             # If not, check if it was created in the input directory
             input_interior_path = os.path.join(
-                args.input_path, f"{args.order_id}-interior.pdf"
+                args.input_path, f"{args.order_id}-interior-{args.cover_type}-{args.book_size}.pdf"
             )
             if os.path.exists(input_interior_path):
                 # Move the file to the correct output directory
@@ -105,7 +105,7 @@ if __name__ == "__main__":
                 )
 
     if args.process in ["cover", "all"]:
-        cover_output_path = os.path.join(args.output_path, f"{args.order_id}-cover.pdf")
+        cover_output_path = os.path.join(args.output_path, f"{args.order_id}-cover-{args.cover_type}-{args.book_size}.pdf")
         front_cover_path = os.path.join(args.input_path, "0.png")
         if os.path.exists(front_cover_path):
             generate_cover_pdf(
