@@ -117,7 +117,7 @@ def generate_cover_pdf(
         if verbose_mode:
             rotated_text.save(f"{output_path}_debug_3_rotated_text.jpg", dpi=(300, 300))
 
-        full_cover.paste(rotated_text, (spine_center_x - spine_width // 2, wrap_margin))
+        full_cover.paste(rotated_text, (spine_center_x, wrap_margin))
 
         logging.debug(f"Spine text added: '{book_title}'")
         logging.debug(f"Spine width: {spine_width} pixels")

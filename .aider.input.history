@@ -836,3 +836,9 @@
 
 # 2024-09-12 15:29:48.646540
 +change the cover and interior output pdf filename to include "-{cover_type}-{book_size}"
+
+# 2024-09-12 15:44:04.223367
++/ask what does "// 2" mean?
+
+# 2024-09-12 15:46:52.650092
++/commit
