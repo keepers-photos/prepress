@@ -26,6 +26,7 @@ def generate_pod_package_id(cover_type, size_type, page_count):
 
     return pod_package_id
 
+
 if __name__ == "__main__":
     cover_types = ["hard_cover", "soft_cover"]
     size_types = ["small_square", "square"]
@@ -36,5 +37,3 @@ if __name__ == "__main__":
         for size_type in size_types:
             pod_package_id = generate_pod_package_id(cover_type, size_type, page_count)
             print(f"{cover_type}, {size_type}: {pod_package_id}")
-
-
