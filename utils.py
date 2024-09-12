@@ -35,6 +35,7 @@ def process_image(input_file, width, height):
         with Image.open(input_file) as img:
             # Resize the image
             img = img.resize((width, height), Image.LANCZOS)
+            img.info["dpi"] = (300, 300)
 
             # Convert from AdobeRGB to CMYK
             assert img.mode == "RGB"
@@ -53,6 +54,7 @@ def process_image(input_file, width, height):
                     quality=100,
                     subsampling=0,  # This ensures no chroma subsampling
                     icc_profile=cmyk_profile.tobytes(),
+                    dpi=(300, 300),
                 )
                 return temp_file.name
     except Exception as e:
