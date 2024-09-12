@@ -136,5 +136,3 @@ def calculate_spine_width_in_inches(page_count, is_hardcover=False):
     else:
         # Paperback spine width calculation
         return page_count / 444 + 0.06
-
-

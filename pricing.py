@@ -10,7 +10,7 @@ def generate_pod_package_id(cover_type, size_type, page_count):
     # Define the components of the pod_package_id
     trim_size = "0750X0750" if size_type == "small_square" else "0850X0850"
     color = "FC"  # Full color
-    print_quality = "PRE" # Premium print quality
+    print_quality = "PRE"  # Premium print quality
     bind = (
         "CW" if cover_type == "hard_cover" else "PB"
     )  # Case wrap for hardcover, Perfect binding for softcover
