@@ -18,15 +18,16 @@ import logging
 from cover import generate_cover_pdf
 from interior import generate_interior_pdf
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Process book pages and generate PDF")
+    parser.add_argument(
+        "--log-level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="INFO",
+        help="Set the logging level (default: INFO)",
+    )
     parser.add_argument("book_title", help="Title of the book")
     parser.add_argument("input_path", help="Input directory containing image files")
     parser.add_argument("output_path", help="Output directory for generated PDFs")
@@ -58,11 +59,18 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Configure logging
+    logging.basicConfig(
+        level=getattr(logging, args.log_level),
+        format="%(asctime)s - %(levelname)s - %(message)s"
+    )
+
     logging.info(f"Processing book: {args.book_title}")
     logging.info(f"Order ID: {args.order_id}")
     logging.info(f"Cover type: {args.cover_type}")
     logging.info(f"Book size: {args.book_size}")
     logging.info(f"Verbose mode: {'Enabled' if args.verbose else 'Disabled'}")
+    logging.info(f"Log level: {args.log_level}")
 
     page_count = len(
         [f for f in os.listdir(args.input_path) if f.endswith(".png") and f != "0.png"]
