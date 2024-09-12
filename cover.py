@@ -95,14 +95,22 @@ def generate_cover_pdf(
         rotated_text = Image.new("CMYK", (cover_height, spine_width), (0, 0, 0, 0))
         rotated_draw = ImageDraw.Draw(rotated_text)
         bbox = rotated_draw.textbbox((0, 0), book_title, font=font)
-        text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
-        text_x = (cover_height - text_width) // 2
+        
+        # Calculate total width with letter-spacing
+        letter_spacing = 5  # Adjust this value to increase or decrease spacing
+        total_width = sum(rotated_draw.textlength(char, font=font) for char in book_title) + letter_spacing * (len(book_title) - 1)
+        
+        text_x = (cover_height - total_width) // 2
         text_y = (spine_width - text_height) // 2
 
-        rotated_draw.text(
-            (text_x, text_y), book_title, font=font, fill=(0, 0, 0, 100)
-        )  # Changed color to pure yellow in CMYK
+        # Draw text with letter-spacing
+        x = text_x
+        for char in book_title:
+            char_width = rotated_draw.textlength(char, font=font)
+            rotated_draw.text((x, text_y), char, font=font, fill=(0, 0, 0, 100))
+            x += char_width + letter_spacing
+
         rotated_text = rotated_text.rotate(-90, expand=1)
         if verbose_mode:
             rotated_text.save(f"{output_path}_debug_3_rotated_text.jpg", dpi=(300, 300))
