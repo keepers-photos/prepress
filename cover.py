@@ -104,11 +104,12 @@ def generate_cover_pdf(
             (text_x, text_y), book_title, font=font, fill=(0, 0, 100, 0)
         )  # Changed color to pure yellow in CMYK
         rotated_text = rotated_text.rotate(-90, expand=1)
+        rotated_text = rotated_text.convert("CMYK")  # Convert to CMYK mode
         if verbose_mode:
             rotated_text.save(f"{output_path}_debug_3_rotated_text.jpg", dpi=(300, 300))
 
         full_cover.paste(
-            rotated_text, (spine_center_x - spine_width // 2, wrap_margin), rotated_text
+            rotated_text, (spine_center_x - spine_width // 2, wrap_margin)
         )
 
         logging.debug(f"Spine text added: '{book_title}'")
