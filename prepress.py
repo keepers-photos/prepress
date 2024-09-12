@@ -60,8 +60,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Configure logging
+    log_level = "DEBUG" if args.verbose else args.log_level
     logging.basicConfig(
-        level=getattr(logging, args.log_level),
+        level=getattr(logging, log_level),
         format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
@@ -70,7 +71,7 @@ if __name__ == "__main__":
     logging.info(f"Cover type: {args.cover_type}")
     logging.info(f"Book size: {args.book_size}")
     logging.info(f"Verbose mode: {'Enabled' if args.verbose else 'Disabled'}")
-    logging.info(f"Log level: {args.log_level}")
+    logging.info(f"Log level: {log_level}")
 
     page_count = len(
         [f for f in os.listdir(args.input_path) if f.endswith(".png") and f != "0.png"]
