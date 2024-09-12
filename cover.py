@@ -71,6 +71,9 @@ def generate_cover_pdf(
     with Image.open(logo_path) as logo:
         logo_size = INCH_TO_PX(2 / 3)
         logo = logo.resize((logo_size, logo_size), Image.LANCZOS)
+        # Convert logo to CMYK if it's not already
+        if logo.mode != 'CMYK':
+            logo = logo.convert('CMYK')
         logo_x = wrap_margin + (cover_width - logo_size) // 2
         logo_y = total_height - wrap_margin - bleed_margin - logo_size - INCH_TO_PX(1)
         full_cover.paste(logo, (logo_x, logo_y))
