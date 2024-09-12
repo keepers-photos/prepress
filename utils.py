@@ -58,7 +58,7 @@ def process_image(input_file, width, height):
         return None
 
 
-def images_to_pdf(image_files, output_path, dpi=300):
+def image_to_pdf(image_files, output_path, dpi=300):
     try:
         pdf_bytes = img2pdf.convert(image_files, dpi=dpi)
 
