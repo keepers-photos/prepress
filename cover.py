@@ -5,7 +5,7 @@ import logging
 import tempfile
 import io
 from PIL import Image, ImageDraw, ImageFont, ImageCms
-from utils import calculate_spine_width_in_inches, png_to_pdf, process_image
+from utils import calculate_spine_width_in_inches, image_to_pdf, process_image
 
 
 def generate_cover_pdf(
@@ -44,23 +44,25 @@ def generate_cover_pdf(
     cover_height = INCH_TO_PX(8.5 if size_type == "square" else 7.5) + 2 * bleed_margin
     wrap_margin = INCH_TO_PX(0.75) if is_hardcover else 0
     spine_width = INCH_TO_PX(calculate_spine_width_in_inches(page_count, is_hardcover))
-    total_width = (cover_width * 2) + spine_width + (wrap_margin * 2)
-    total_height = cover_height + (wrap_margin * 2)
 
-    front_cover = process_image(front_cover_path, cover_width, cover_height)
+    front_cover_path = process_image(front_cover_path, cover_width, cover_height)
+    logging.debug(f"Front cover processed: {front_cover_path}")
     logging.debug(f"Front cover processed: {front_cover_path} ({cover_width}x{cover_height})")
+    front_cover = Image.open(front_cover_path)
+    logging.debug(f"Front cover opened: {front_cover_path} {front_cover.size}")
     if verbose_mode:
-        front_cover.save(
-            f"{output_path}_debug_0_front_cover_processed.png", dpi=(300, 300)
-        )
+        front_cover.save(f"{output_path}_debug_0_front_cover.jpg", dpi=(300, 300))
 
     # Paste the front cover
+    total_width = (cover_width * 2) + spine_width + (wrap_margin * 2)
+    total_height = cover_height + (wrap_margin * 2)
+    full_cover = Image.new("CMYK", (total_width, total_height), color=(0, 0, 0))
     front_cover_x = wrap_margin + cover_width + spine_width
     front_cover_y = wrap_margin
     full_cover.paste(front_cover, (front_cover_x, front_cover_y))
     logging.debug(f"Front cover pasted at ({front_cover_x}, {front_cover_y})")
     if verbose_mode:
-        full_cover.save(f"{output_path}_debug_1_front_cover.png", dpi=(300, 300))
+        full_cover.save(f"{output_path}_debug_1_front_cover.jpg", dpi=(300, 300))
 
     # Add logo to the back cover
     logo_path = os.path.join(os.path.dirname(__file__), "resources", "logo.jpg")
@@ -72,7 +74,7 @@ def generate_cover_pdf(
         full_cover.paste(logo, (logo_x, logo_y))
         logging.debug(f"Logo pasted at ({logo_x}, {logo_y})")
     if verbose_mode:
-        full_cover.save(f"{output_path}_debug_2_with_logo.png", dpi=(300, 300))
+        full_cover.save(f"{output_path}_debug_2_with_logo.jpg", dpi=(300, 300))
 
     # Add spine text if page count is over 80
     if page_count > 80:
@@ -96,16 +98,16 @@ def generate_cover_pdf(
         logging.debug(f"Spine text added: {book_title} at ({text_x}, {text_y})")
         if verbose_mode:
             full_cover.save(
-                f"{output_path}_debug_3_with_spine_text.png", dpi=(300, 300)
+                f"{output_path}_debug_3_with_spine_text.jpg", dpi=(300, 300)
             )
 
     # Save as temporary PNG file
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_file:
-        full_cover.save(temp_file, "PNG", resolution=DPI)
+    with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
+        full_cover.save(temp_file, "JPEG", resolution=DPI)
         temp_file_path = temp_file.name
 
     # Convert PNG to PDF using img2pdf
-    png_to_pdf([temp_file_path], output_path)
+    image_to_pdf([temp_file_path], output_path)
     logging.info(f"Cover PDF generated: {output_path}")
 
     # Remove temporary file

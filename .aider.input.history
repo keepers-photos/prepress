@@ -716,3 +716,27 @@
 
 # 2024-09-12 10:19:13.170362
 +/ask why JPEG2000 instead of JPEG with 100% compression? 
+
+# 2024-09-12 10:20:23.623739
++k. this is looking good. let's go
+
+# 2024-09-12 14:27:26.056083
++/add utils.py
+
+# 2024-09-12 14:27:35.574737
++/ask {
+
+# 2024-09-12 14:27:41.223277
++class pikepdf._core.Attachments(*args, **kwargs)
+
+# 2024-09-12 14:27:41.428322
++Exposes files attached to a PDF.
+
+# 2024-09-12 14:27:48.264171
++If a file is attached to a PDF, it is exposed through this interface. For example p.attachments['readme.txt'] would return a pikepdf._core.AttachedFileSpec that describes the attached file, if a file were attached under that name. p.attachments['readme.txt'].get_file() would return a pikepdf._core.AttachedFile, an archaic intermediate object to support different versions of the file for different platforms. Typically one just calls p.attachments['readme.txt'].read_bytes() to get the contents of the file.
+
+# 2024-09-12 14:27:54.583445
++/add utils.py
+
+# 2024-09-12 14:28:00.344972
++/web https://pikepdf.readthedocs.io/en/latest/api/models.html#pikepdf._core.Attachments

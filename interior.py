@@ -4,7 +4,7 @@ import os
 import logging
 from multiprocessing import Pool, cpu_count
 
-from utils import print_progress, process_image, png_to_pdf
+from utils import print_progress, process_image, image_to_pdf
 
 
 def generate_interior_pdf(input_path, output_path, book_size, debug=False):
@@ -50,7 +50,7 @@ def generate_interior_pdf(input_path, output_path, book_size, debug=False):
         return
 
     logging.info("Combining images into PDF...")
-    png_to_pdf(processed_files, output_path)
+    image_to_pdf(processed_files, output_path)
 
     if not debug:
         logging.info("Cleaning up temporary files...")

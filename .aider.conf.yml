@@ -3,4 +3,4 @@ read: [README.md, requirements.txt]
 cache-prompts: true
 stream: false
 auto-lint: true
-lint-cmd: black .
+lint-cmd: ./.venv/bin/black .
