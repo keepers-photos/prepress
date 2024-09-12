@@ -7,9 +7,14 @@ from PIL import Image, ImageCms
 import pikepdf
 
 
-cmyk_profile_path = os.path.join(os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc")
+cmyk_profile_path = os.path.join(
+    os.path.dirname(__file__), "resources", "GRACoL2006_Coated1v2.icc"
+)
 cmyk_profile = ImageCms.getOpenProfile(cmyk_profile_path)
-adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
+adobe_rgb_profile = ImageCms.getOpenProfile(
+    os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc")
+)
+
 
 def print_progress(
     iteration,
@@ -32,7 +37,7 @@ def process_image(input_file, width, height):
         with Image.open(input_file) as img:
             # Resize the image
             img = img.resize((width, height), Image.LANCZOS)
-            
+
             # Convert from AdobeRGB to CMYK
             assert img.mode == "RGB"
             img = ImageCms.profileToProfile(
@@ -41,7 +46,7 @@ def process_image(input_file, width, height):
                 outputProfile=cmyk_profile,
                 outputMode="CMYK",
             )
-            
+
             # Save as temporary JPEG file
             with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as temp_file:
                 img.save(
