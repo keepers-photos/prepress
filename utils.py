@@ -11,6 +11,11 @@ cmyk_profile_path = os.path.join(os.path.dirname(__file__), "resources", "GRACoL
 cmyk_profile = ImageCms.getOpenProfile(cmyk_profile_path)
 adobe_rgb_profile = ImageCms.getOpenProfile(os.path.join(os.path.dirname(__file__), "resources", "AdobeRGB1998.icc"))
 
+def add_icc_profile_attachment(pdf):
+    with open(cmyk_profile_path, "rb") as icc:
+        icc_profile = icc.read()
+    pdf.attachments["GRACoL2006_Coated1v2.icc"] = pikepdf.AttachedFileSpec.from_filepath(pdf, cmyk_profile_path)
+
 
 def print_progress(
     iteration,
@@ -69,10 +74,10 @@ def image_to_pdf(image_files, output_path, dpi=300):
 
         # Open the temporary PDF and embed the CMYK color profile
         with pikepdf.Pdf.open(temp_pdf_path) as pdf:
+            add_icc_profile_attachment(pdf)
             with open(cmyk_profile_path, "rb") as icc:
                 icc_profile = icc.read()
 
-            pdf.add_attachment("GRACoL2006_Coated1v2.icc", icc_profile)
             for page in pdf.pages:
                 page.add_resource(
                     pikepdf.Name.ColorSpace,
